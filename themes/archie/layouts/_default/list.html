@@ -1,0 +1,42 @@
+{{ define "main" }}
+<div class="list-page">
+  <h1 class="list-title">
+    {{ if .IsHome }}Posts
+    {{ else if eq .Kind "taxonomy" }}{{ .Title | title }}
+    {{ else }}{{ .Title }}
+    {{ end }}
+  </h1>
+
+  {{ $paginator := .Paginate .Pages }}
+  <div class="posts-list">
+    {{ range $paginator.Pages }}
+    <article class="post-preview">
+      <div class="post-meta">
+        <time>{{ .Date.Format "Jan 2, 2006" }}</time>
+        {{ with .Params.categories }}
+          {{ range . }}
+            <a class="category" href="{{ "/categories/" | absURL }}{{ . | urlize }}/">{{ . }}</a>
+          {{ end }}
+        {{ end }}
+      </div>
+      <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+      {{ with .Summary }}
+        <p class="post-summary">{{ . | plainify | truncate 200 }}</p>
+      {{ end }}
+    </article>
+    {{ end }}
+  </div>
+
+  {{ if gt $paginator.TotalPages 1 }}
+  <div class="pagination">
+    {{ if $paginator.HasPrev }}
+      <a href="{{ $paginator.Prev.URL }}">&larr; Newer</a>
+    {{ end }}
+    <span>Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+    {{ if $paginator.HasNext }}
+      <a href="{{ $paginator.Next.URL }}">Older &rarr;</a>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+{{ end }}

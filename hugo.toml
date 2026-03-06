@@ -1,0 +1,51 @@
+baseURL = "https://thenumbercrunch.com"
+languageCode = "en-us"
+title = "The Number Crunch"
+theme = "archie"
+copyright = "Ashutosh Pathak"
+paginate = 10
+
+[params]
+  author = "Ashutosh Pathak"
+  description = "From data to insight."
+  math = false
+  dark = false
+
+  # Social links (edit as needed)
+  # twitter = "yourhandle"
+  # github = "yourusername"
+  # linkedin = "yourprofile"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    name = "Posts"
+    url = "/posts/"
+    weight = 2
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 3
+  [[menu.main]]
+    name = "About"
+    url = "/pages/about/"
+    weight = 4
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+    codeFences = true
+  [markup.goldmark.renderer]
+    unsafe = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]

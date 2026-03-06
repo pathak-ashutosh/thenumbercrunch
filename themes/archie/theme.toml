@@ -1,0 +1,9 @@
+[theme]
+  name = "Archie"
+  license = "MIT"
+  licenselink = "https://github.com/athul/archie/blob/master/LICENSE"
+  description = "A minimal Hugo theme"
+  homepage = "https://github.com/athul/archie"
+  tags = ["minimal", "dark", "light", "simple", "blog"]
+  features = ["responsive", "syntax-highlighting", "dark-mode"]
+  min_version = "0.62.0"
