@@ -5,7 +5,7 @@ draft: false
 author: "ashutosh"
 ---
 
-Hi, I am Ashutosh Pathak. In my late twenties, I am just trying to make the best of the opportunities I come across in life. Currently, my life seems to be going straight into deep tech so that's where I focus the most. Although, I love deep tech as much as any tech enthusiast, I love breaking things down more! I love public speaking, meeting lots of amazing new people, and sharing my thoughts on tech out loud. I'm not very good at coding so I will keep this blog focused on breaking things down and how technology works in the hopes that you'll also get some value out of reading it.
+Hi, I am Ashutosh Pathak — an AI Engineer specializing in Artificial Intelligence and Machine Learning. I am passionate about bridging theoretical AI concepts with real-world business challenges. I love breaking things down, meeting new people, and sharing my thoughts on tech out loud. This blog is my way of doing just that.
 
 ![](https://thenumbercrunch.com/wp-content/uploads/2024/12/working-on-laptop.webp)
 
@@ -19,9 +19,9 @@ In the end, I want to urge you to write as well! Just pick up your phone/laptop 
 
 ## My Experience
 
-I have a bachelors and masters in Computer Science with a concentration in Machine Learning. So far, I have gotten the chance to work as Software Engineer and wear multiple hats within this role at different organisations. I have worked in Software Testing, Automation, DevOps, MLOps, Data Engineering, and Data Science. 
+I hold a bachelors and masters in Computer Science with a concentration in Machine Learning, and I am 2x AWS Certified. My career has spanned Software Engineering, DevOps, MLOps, Data Engineering, and Data Science across multiple organizations.
 
-Nowadays, I spend most of my time as an AI consultant where I get to do a bunch of cool stuff! I help my clients realize the power of AI tools in enhancing their workflows and company-wide productivity. I do everything from Finetuning LLMs to traditional Machine Learning Predictive Modeling, and more.
+Currently, I work as an **AI Engineer at SKYPAD** in New York, where I build production AI systems — like architecting an AI assistant using LangGraph state-machine orchestration on Google Cloud Run. Prior to this, I worked as an AI Consultant, helping clients design AI model architectures, fine-tune LLMs, and integrate machine learning pipelines into their products and workflows.
 
 ## My Journey
 
@@ -32,3 +32,7 @@ Since my childhood, I remember myself tinkering with toys—opening them up and 
 This was the spark that ignited my dream of building things using software.
 
 ## My Goals
+
+I want to keep building AI systems that actually matter — not just demos, but production-grade tools that change how people work. On this blog, I aim to break down complex AI concepts so that more people can understand and leverage them, regardless of their background.
+
+I'm always open to connecting with fellow tech enthusiasts, potential collaborators, and anyone curious about the transformative power of AI. Find me on [LinkedIn](https://www.linkedin.com/in/pathak-ash/) or [X](https://x.com/pathak_jeee).
