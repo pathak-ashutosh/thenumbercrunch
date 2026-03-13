@@ -23,7 +23,7 @@ This is the reason why Seneca advises Lucilius to refrain from misguided means o
 
 Having said this, you should not defy everything and make yourself an outcast either. "Inwardly everything should be different but outward face should conform with the crowd." By saying this, Seneca is not telling us to trick anyone, he is simply pointing to our nature of projecting ourselves superior. Let's take my blog as an example. What Seneca means is that I should not write an article to garner millions of views (although that is something the crowd loves) but I should focus on developing my thoughts and ideas, as well as my writing which will help me become a better thinker and writer. Instead of focusing on getting views and writing and publishing low quality content quickly, which will increase my SEO ranking, but get me nowhere in terms of developing my thought process, I should focus on the process of writing rather than the outcome after publishing.
 
-![ideas + execution = success](https://thenumbercrunch.com/wp-content/uploads/2022/07/success-gb1f2a6994_1280-1024x576.jpg)Image by [ar130405](<https://pixabay.com/users/ar130405-423602/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2081168>) from [Pixabay](<https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2081168>)
+The formula for success is simple: good ideas combined with consistent execution. What matters is that the work is done for genuine growth, not for the applause it might attract.
 
 ## Conclusion
 
@@ -31,8 +31,8 @@ If I want to make a difference in your lives, I should be admirable but at the s
 
 ## Seneca's Find Of The Day
 
-In this letter Seneca shares what he noticed in another Stoic writer Hecato. "**Cease to hope, and you will cease to fear.** " If you keep your hopes in check, you will limit your fear. Although Seneca wasn't surprised by this finding, I was! He says, "Fear keeps pace with hope. Both belong to a mind of suspense; to a mind in a state of anxiety through looking into the future." Our biggest blessings - the remarkable ability to remember and the astounding ability of foresight - are also our biggest curses. "Memory brings back the agony of fear while foresight brings it on prematurely. No one confines his unhappiness to the present." 
+In this letter Seneca shares what he noticed in another Stoic writer Hecato. "**Cease to hope, and you will cease to fear.** " If you keep your hopes in check, you will limit your fear. Although Seneca wasn't surprised by this finding, I was! He says, "Fear keeps pace with hope. Both belong to a mind of suspense; to a mind in a state of anxiety through looking into the future." Our biggest blessings - the remarkable ability to remember and the astounding ability of foresight - are also our biggest curses. "Memory brings back the agony of fear while foresight brings it on prematurely. No one confines his unhappiness to the present."
 
 * * *
 
-Your views can differ from mine, but if you found the points made in this post reasonable then please share this with your family and friends. It would mean a lot to me!  _You’ll also find an entire series where I talk about stoicism from Seneca’s perspective and how it can or cannot be accommodated in our modern lives[**here**](<https://thenumbercrunch.com/a-new-series-stoic-ashutosh/>)_. Have a look;  _you’ll definitely find something that stimulates your mind_. Thanks a lot for reading!
+Your views can differ from mine, but if you found the points made in this post reasonable then please share this with your family and friends. It would mean a lot to me!  _You'll also find an entire series where I talk about stoicism from Seneca's perspective and how it can or cannot be accommodated in our modern lives[**here**](<https://thenumbercrunch.com/a-new-series-stoic-ashutosh/>)_. Have a look;  _you'll definitely find something that stimulates your mind_. Thanks a lot for reading!

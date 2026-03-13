@@ -15,15 +15,15 @@ In this article, we'll dive deep into the inner workings of EconBERTa, exploring
 
 Join me on this exciting journey as I share my experience implementing the EconBERTa paper, from the initial problem statement to the nitty-gritty details of the code. Whether you're an NLP enthusiast, an economics researcher, or simply curious about the latest advancements in AI, this article will provide you with a comprehensive understanding of EconBERTa's potential to reshape the landscape of economic analysis. 🚀📈
 
-Let’s start with learning about the two main topics of this article: named entity recognition and impact evaluation.
+Let's start with learning about the two main topics of this article: named entity recognition and impact evaluation.
 
 ## What is Named Entity Recognition?
 
 > Named Entity Recognition (NER) is a canonical information extraction task which consists of detecting text spans and classifying them into a predetermined set of entity types.
-> 
+>
 > Lasri et al, [EconBERTa: Towards Robust Extraction of Named Entities in Economics](<https://aclanthology.org/2023.findings-emnlp.774/>)
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-8-1024x194.png)Figure 1: Example annotation (source: EconBERTa paper)
+For example, a sentence like "The minimum wage increase in Mexico reduced poverty rates by 5%" would have entities such as the intervention (minimum wage increase), population (Mexico), outcome (poverty rates), and effect size (5%) labeled accordingly.
 
 ## The Problem(s)
 
@@ -33,7 +33,7 @@ So far NER has been implemented in domains like science, medicine, finance, and 
   2. Studies have shown that the introduction of pre-trained language models, also known as foundation models, had a profound impact on various domains by fine-tuning them on downstream tasks. Studies also show that pretraining a language model on documents from the same domain as the downstream task improves performance either by in-domain pretraining from scratch, or by further in-domain pretraining from the weights of an existing general-purpose model. While pretrained models are present across domains, economics is yet to follow suit.
   3. Assessing the performance of a model is often done after fine-tuning but the knowledge gained by such transfer learning approaches is opaque. Therefore, it remains unclear which aspects of the model need improvement to increase its robustness during deployment. And to understand the weakness of a SOTA model, we need to understand the notion of generalization but lack its precise definition.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-7-1024x742.png)Figure 2: A rough sketch by yours truly showing how impact evaluation works
+Impact evaluation in economics studies the causal effect of a policy or program intervention on an outcome of interest. For instance, it might examine how a cash transfer program affects school enrollment rates in a developing country.
 
 ## The Proposal(s)
 
@@ -43,7 +43,7 @@ So far NER has been implemented in domains like science, medicine, finance, and 
 
 Authors' source code implementation in AllenNLP is available at <https://github.com/worldbank/econberta-econie>. You can also find the related work in detail in the paper because instead of discussing that we will focus on how our approach works.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/05/Screenshot-Fig1-1024x335.png)Figure 3: Overview of the process followed by authors (source: EconBERTa paper)
+The overall process involves pretraining EconBERTa on a large economics corpus, then fine-tuning on the ECON-IE dataset, and finally evaluating the model's generalization using diagnostic tests.
 
 ## Previous Work
 
@@ -55,11 +55,11 @@ This paper fills two gaps by (i) addressing information extraction from scientif
 
 ### Diagnosing fine-tuned models
 
-Examining generalisation abilities of fine-tuned models shows that it is possible to achieve seemingly high performance without learning a given task by relying on heuristics and spurious correlations. This has pushed efforts to complement coarse-grained metrics like accuracy and f1-score with new novel ways to diagnose model’s errors.
+Examining generalisation abilities of fine-tuned models shows that it is possible to achieve seemingly high performance without learning a given task by relying on heuristics and spurious correlations. This has pushed efforts to complement coarse-grained metrics like accuracy and f1-score with new novel ways to diagnose model's errors.
 
 ## Experiments
 
-So far we have seen the problems faced in this domain and the proposed solutions to alleviate them. This gives us a clear direction to head into before we start coding. But before we can jump into coding the solutions, let’s have a quick look at the dataset.
+So far we have seen the problems faced in this domain and the proposed solutions to alleviate them. This gives us a clear direction to head into before we start coding. But before we can jump into coding the solutions, let's have a quick look at the dataset.
 
 ### The Dataset
 
@@ -67,23 +67,21 @@ The ECON-IE dataset consists of text from 100 abstracts summarizing impact evalu
 
 The proposed model involves pretraining and finetuning the models with the ECON-IE dataset and comparing results. The dataset was collected and annotated for the following entities describing the causal effects of policy interventions: outcome, population, effect size, intervention, and coreference.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image.png)Table 1: Summary statistics of ECON-IE dataset (source: EconBERTa paper)
+The dataset summary statistics show a breakdown of entity counts across the train, dev, and test splits, with intervention and outcome being the most frequent entity types.
 
 ### Implementation
 
-The central claim of the paper is that EconBERTa reaches SOTA performance on downstream NER tasks. There are two versions of EconBERTa (i) EconBERTa-FS pretrained from scratch on economic vocabulary and (ii) EconBERTa-FC loaded from mDeBERTa’s checkpoint and then fine-tuned on ECON-IE dataset for the NER task. The author has also compared the performance of EconBERTa with that of BERT, RoBERTa, and mDeBERTa-v3 on the given dataset.
+The central claim of the paper is that EconBERTa reaches SOTA performance on downstream NER tasks. There are two versions of EconBERTa (i) EconBERTa-FS pretrained from scratch on economic vocabulary and (ii) EconBERTa-FC loaded from mDeBERTa's checkpoint and then fine-tuned on ECON-IE dataset for the NER task. The author has also compared the performance of EconBERTa with that of BERT, RoBERTa, and mDeBERTa-v3 on the given dataset.
 
 We did not have enough resources to pretrain the entire model from scratch so we ruled out reproducing results from the EconBERTa-FS version and focused on fine-tuning the EconBERTa-FC checkpoint from huggingface.co using ECON-IE dataset and its results.
 
 ### Baseline Models
 
-We compare our fine-tuned EconBERTa-FC to mDeBERTa-v3-base as it has the same architecture. We also compared it with BERT-base-uncased and RoBERTa-base on the given dataset in line with the authors’ approach.
+We compare our fine-tuned EconBERTa-FC to mDeBERTa-v3-base as it has the same architecture. We also compared it with BERT-base-uncased and RoBERTa-base on the given dataset in line with the authors' approach.
 
 ### Named Entity Recognition (NER) Finetuning
 
-The fine-tuned NER model relies on a Conditional Random Field (CRF) layer for classification. All the trainings were conducted using a custom model defined as CRFTagger created by adding a CRF layer at the end, mimicking AllenNLP’s implementation of crf_taggger method. The hyperparameters used were given by the authors in the paper.
-
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-1.png)Table 2: Hyperparameters for fine-tuning (source: EconBERTa paper)
+The fine-tuned NER model relies on a Conditional Random Field (CRF) layer for classification. All the trainings were conducted using a custom model defined as CRFTagger created by adding a CRF layer at the end, mimicking AllenNLP's implementation of crf_taggger method. The hyperparameters used were given by the authors in the paper, including a dropout of 0.2, learning rates searched over [5e-5, 6e-5, 7e-5], batch size of 12, and 10 max epochs.
 
 ##### What is a CRF Layer?
 
@@ -93,7 +91,7 @@ A CRF layer takes into account the dependencies between adjacent labels in a seq
   - Joint decoding: Instead of making independent label predictions for each token, a CRF layer performs joint decoding, considering all possible label sequences and finding the most likely one. This global optimization helps ensure the predicted label sequence is coherent and follows the constraints of the NER task, such as not having an "I-" label without a preceding "B-" label.
   - Improved performance: Studies have shown that adding a CRF layer on top of neural network architectures like BERT or BiLSTM improves NER performance compared to using the neural network alone. The CRF layer helps refine the predictions made by the underlying neural network, leading to higher precision and recall scores.
 
-All right, with that out of the way, let’s have a look at the code!
+All right, with that out of the way, let's have a look at the code!
 
 ### Code
 
@@ -111,13 +109,13 @@ Make sure you have the following packages installed:
 Import packages and check if you have an Nvidia GPU (if you want to run it on another hardware, assign the device variable to it, and all the best!)
 
 Python
-    
-    
+
+
     import torch
     torch.cuda.empty_cache()
-    
+
     assert torch.cuda.is_available()
-    
+
     device_name = torch.cuda.get_device_name()
     n_gpu = torch.cuda.device_count()
     print(f"Found device: {device_name}, n_gpu: {n_gpu}")
@@ -128,11 +126,11 @@ We used a 40GB MIG slice of NVIDIA A100-SXM4-80GB GPU to fine-tune the models.
 Now, the first thing we did was to seed everything. We used a custom seed method throughout our code for reproducibility. My professor shared this method in one of the assignments in the class and I have been using it ever since.
 
 Python
-    
-    
+
+
     import random
     import numpy as np
-    
+
     # Ensure reproducibility
     def seed_everything(seed=42):
         random.seed(seed)
@@ -144,15 +142,15 @@ Python
         torch.backends.cudnn.deterministic = True
 
 Python
-    
-    
+
+
     seed_everything()
 
 Then we set the hyperparameters before doing anything else so that there is one place to modify them and run the notebook again when required.
 
 Python
-    
-    
+
+
     # Set the hyperparameters according to Table 8
     dropout = 0.2
     learning_rates = [5e-5, 6e-5, 7e-5]  # Perform hyperparameter search
@@ -169,12 +167,12 @@ Python
 Once we are sure that everything that depends on a random generator is seeded, we load the dataset into a dataframe. Then take this dataframe and convert it to the required dataset format. This dataset is a tuple of a list of (input_ids, attention_masks, labels) tuples and the sentences themselves ([(input_id, attention_mask, label)], sentence). We created custom methods to read the data into dataframes, tokenize and format them, and return them into the desirable format.
 
 Python
-    
-    
+
+
     train_df = read_conll('../data/econ_ie/train.conll')
     val_df = read_conll('../data/econ_ie/dev.conll')
     test_df = read_conll('../data/econ_ie/test.conll')
-    
+
     train_set, train_sentences = get_dataset(train_df, tokenizer, label_dict)
     val_set, val_sentences = get_dataset(val_df, tokenizer, label_dict)
     test_set, test_sentences = get_dataset(test_df, tokenizer, label_dict)
@@ -182,8 +180,8 @@ Python
 We also defined an enum class to reuse the model names. The class also contains multilingual models which we used to extend the paper.
 
 Python
-    
-    
+
+
     # Define an enum for model names
     class ModelName(Enum):
         BERT = 'google-bert/bert-base-uncased'
@@ -197,8 +195,8 @@ Python
 Then we defined the label_dict to map labels to numbers and reverse_label_dict for vice-versa.
 
 Python
-    
-    
+
+
     label_dict = {
         'O': 0,
         'B-intervention': 1,
@@ -212,17 +210,17 @@ Python
         'B-coreference': 9,
         'I-coreference': 10
     }
-    
+
     reverse_label_dict = {v: k for k, v in label_dict.items()}
 
 We loaded the pretrained model making sure that it was capable of performing the NER task. To do this, we need to add a CRF layer at the end as the classification layer to this model. We created a custom wrapper to add this layer to the existing model.
 
 Python
-    
-    
+
+
     from torchcrf import CRF
     from transformers import AutoModel
-    
+
     class CRFTagger(torch.nn.Module):
         def __init__(self, model_name, num_labels):
             super().__init__()
@@ -230,16 +228,16 @@ Python
             self.dropout = torch.nn.Dropout(dropout)
             self.classifier = torch.nn.Linear(self.bert.config.hidden_size, num_labels)
             self.crf = CRF(num_labels, batch_first=True)
-    
+
         def forward(self, input_ids, attention_mask, labels=None):
             outputs = self.bert(input_ids, attention_mask=attention_mask)
             sequence_output = outputs[0]
             sequence_output = self.dropout(sequence_output)
             logits = self.classifier(sequence_output)
-    
+
             # Mask should be of type 'bool' in newer PyTorch versions
             mask = attention_mask.type(torch.bool) if hasattr(torch, 'bool') else attention_mask.byte()
-            
+
             if labels is not None:
                 loss = -self.crf(logits, labels, mask=mask, reduction='mean')
                 return {'loss': loss, 'logits': logits, 'decoded': self.crf.decode(logits, mask=mask)}
@@ -248,10 +246,10 @@ Python
                 return {'decoded': decoded_labels, 'logits': logits}
 
 Python
-    
-    
+
+
     seed_everything()
-    
+
     # Load the pre-trained model
     model = CRFTagger(model_name, len(label_dict))
     model.dropout = torch.nn.Dropout(dropout)
@@ -265,7 +263,7 @@ The training loop goes through the defined learning rates and for each rate crea
 
 ### Approach and Results
 
-The dataset is divided into 3 parts: train.conll, test.conll, and dev.conll. The authors also provide a full.conll file that we didn’t come to use. The data in these files have two columns. The first column is tokens and the second column has its corresponding label.
+The dataset is divided into 3 parts: train.conll, test.conll, and dev.conll. The authors also provide a full.conll file that we didn't come to use. The data in these files have two columns. The first column is tokens and the second column has its corresponding label.
 
 We tried two methods of loading the data and running the training loop:
 
@@ -274,7 +272,7 @@ We tried two methods of loading the data and running the training loop:
 
 [❗️Spoiler Alert❗️] The sentence-based approach turned out to be 10x faster than the token-based approach. It took us ~50 mins per epoch using the token-based approach whereas ~5 mins per epoch with the sentence-based approach. Not just that, the dev f1-score of the former was also considerably worse than the latter. Hence, we stuck to the sentence-based approach.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-2.png)Table 3: Comparision of models’ performance for NER task on ECON-IE dataset (source: EconBERTa paper) ![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-3.png)Table 4: Model performance comparison in both of our approaches
+The authors' results on the ECON-IE dataset show EconBERTa-FC outperforming BERT, RoBERTa, and mDeBERTa-v3 baselines, while our reproduced results using the sentence-based approach came close to those numbers and confirmed the same ranking between models.
 
 The code that we have provided corresponds to the sentence-based method only as it is the one that was relevant to us. We developed code from scratch using PyTorch to integrate with Huggingface Transformers, enabling us to train and test models against the provided dataset, aiming for results matching the original study. This phase required advanced programming skills and deep model understanding.
 
@@ -284,14 +282,14 @@ This process involved rigorous debugging, optimization, and experimentation to a
 
 Previous work has argued that comparing F1-scores on dev set cannot highlight strengths and weaknesses of the model under test. F1-score is computed at a token level in NER. Instead of considering each token on its own, one solution might be to measure whether the entire span of an entity is accurately predicted.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-4.png)Table 5: Attributes of various prediction types based on entity types and span boundaries (source: EconBERTa paper)
+Prediction types are categorized by how well they match the gold entity spans: exact matches, where both the entity type and span boundaries are correct; and various error types such as wrong boundaries, wrong type, or spurious/missed entities.
 
 In our efforts to replicate the results reported by the authors in their model comparisons, we encountered significant discrepancies earlier between the expected and observed performances of the models. However, we were able to fix the approach as explained earlier (token-based vs sentence-based) and get better results.
 
-  - We performed error analysis and plotted the graph to see the proportion of Exact Match, and other error types proposed in the paper and compared it to the authors’ results.
+  - We performed error analysis and plotted the graph to see the proportion of Exact Match, and other error types proposed in the paper and compared it to the authors' results.
   - We were able to get most of the tokens partially correct within the boundaries while the authors got most of them exactly within the boundary for the shortest entity length.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-5.png)Figure 4: The proportions of exact matches and of the different error types for EconBERTa-FC as a function of entity length in our results on the test data. ![](https://thenumbercrunch.com/wp-content/uploads/2024/06/image-6.png)Figure 5: Proportion of exact matches and of the different error types as a function of entity length (source: EconBERTa paper)
+Our results showed that exact match rates improved as entity length increased, while the authors' results showed the opposite trend — their model handled short entities most precisely. This discrepancy points to differences in how the token-based and sentence-based approaches handle boundary prediction for short spans.
 
 The authors also discussed the possibility of lexical memorization but we did not have enough time to dive into it. However, we performed a robustness check and tested multilingual abilities of the model which was not done by the authors. Those are discussed in great detail in the project report which you can find in our repository [here](<https://github.com/pathak-ashutosh/EconBERTa-rep/blob/main/Project_Report.pdf>).
 

@@ -7,8 +7,6 @@ author: "ashutosh"
 
 Hi, I am Ashutosh Pathak — an AI Engineer specializing in Artificial Intelligence and Machine Learning. I am passionate about bridging theoretical AI concepts with real-world business challenges. I love breaking things down, meeting new people, and sharing my thoughts on tech out loud. This blog is my way of doing just that.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/12/working-on-laptop.webp)
-
 ## Why I write
 
 I write to simply share my experiences and view on technology. I want to make sure that I document what I understand at the moment so that when I look back at it, I'll see the bigger picture and learn to extract patterns in tech and in my life.
@@ -26,8 +24,6 @@ Currently, I work as an **AI Engineer at SKYPAD** in New York, where I build pro
 ## My Journey
 
 Since my childhood, I remember myself tinkering with toys—opening them up and assembling back the pieces. Later, when I got my first computer, I used to love opening it up and experimenting with different parts like the power unit, hard drives, and the motherboard. I have ruined my fair share of computer parts.
-
-![](https://thenumbercrunch.com/wp-content/uploads/2024/12/fixing-computer-1024x585.webp)
 
 This was the spark that ignited my dream of building things using software.
 

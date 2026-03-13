@@ -21,7 +21,7 @@ I remember when I used to stick to one thing and the peace it used to bring me. 
 
 Seneca tells Lucilius, "To be everywhere is to be nowhere." That's why he suggests to Lucilius that he should extend his stay among writers whose genius is unquestionable in order to derive constant nourishment for the mind. He argues that our minds are like plants. If you keep moving a plant from one place to another, it won't grow as much as it would have, had it been at the same place. I agree with that. If someone does this to their mind, it would become the jack of all trades but master of none. Nothing can be useful if we have just gone through it in passing. We know that in today's world, there are a lot of people who can do a lot of things in a mediocre manner. What nations and businesses need are people who specialize; people who know their stuff and are able to make decisions that could potentially affect millions of lives.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2022/03/tsp1-1024x683.jpg)Photo by **[The Lazy Artist Gallery](<https://www.pexels.com/@thelazyartist?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels>)**  from **[Pexels](<https://www.pexels.com/photo/man-walking-on-pavement-while-holding-a-bag-3307862/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels>)**
+![](https://images.pexels.com/photos/3307862/pexels-photo-3307862.jpeg)Photo by **[The Lazy Artist Gallery](<https://www.pexels.com/@thelazyartist?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels>)**  from **[Pexels](<https://www.pexels.com/photo/man-walking-on-pavement-while-holding-a-bag-3307862/?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels>)**
 
 ## Conclusion
 

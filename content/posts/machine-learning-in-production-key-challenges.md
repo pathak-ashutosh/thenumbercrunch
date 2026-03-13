@@ -17,9 +17,7 @@ Lets take the example of phones being manufactured on an assembly line in a fact
 
 > These softwares do what is often called Automated Visual Defect Inspection
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/Automated-Visual-Defect-Inspection-1024x534.png)Figure 1: how an Automated Visual Defect Inspection system works
-
-The prediction server could either be on the cloud (as shown in figure 1), or on an edge device. More often than not, it is preferred to keep it on the edge as the assembly line cannot afford to stop every time there is an internet issue.
+In such a system, the prediction server could either be on the cloud or on an edge device. More often than not, it is preferred to keep it on the edge as the assembly line cannot afford to stop every time there is an internet issue.
 
 ## What Could Possibly Go Wrong?
 
@@ -27,7 +25,5 @@ There are some key challenges:
 
   1. Concept drift and Data drift: What happens when the lights in the factory are dimmer than when you created the train and test dataset? It could result in the model totally missing some significant scratches potentially costing the company a huge amount of money. This is one of many practical challenges that ML teams need to watch out for and handle in order to deploy these models. We'll talk about them in more detail soon.
   2. Models in production need more than just the ML code: For most ML projects maybe only less than 5-10% of it is the ML model code. There is still a lot of work required to go from POC on a Jupyter Notebook to a deployed model. This is called the POC to Production Gap.
-
-![](https://thenumbercrunch.com/wp-content/uploads/2024/06/POC-to-Production-Gap-1024x359.png) ![](https://thenumbercrunch.com/wp-content/uploads/2024/06/Requirements-surrounding-ML-infrastructure-1024x427.png)
 
 Source: Machine Learning in Production by [Deeplearning.AI](<https://www.coursera.org/learn/introduction-to-machine-learning-in-production/>)

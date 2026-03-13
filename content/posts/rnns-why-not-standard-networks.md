@@ -17,11 +17,9 @@ Basically, there are a couple of main problems that come up when using Standard 
 
 We can take the maximum length sentence and pad every other sentence in the document with zeros up to that length, but that still doesn't seem like a good representation.
 
-![](https://thenumbercrunch.com/wp-content/uploads/2024/04/Standard-NN.jpeg)A neural network representation showing different length inputs and outputs. ©Ashutosh Pathak 2024
+2\. **A naive Neural Network architecture does not share features learned across different positions of text**
 
-2\. **A naive Neural Network architecture (like the one above) does not share features learned learned across different positions of text**
-
-For example, if a neural network has learned that the word "Harry" appearing at position 1 in the text gives a sign that it is part of a person's name, then wouldn't it be nice if it could automatically figure out that the same word Harry appearing at another position x<t> also might be a person's name? 
+For example, if a neural network has learned that the word "Harry" appearing at position 1 in the text gives a sign that it is part of a person's name, then wouldn't it be nice if it could automatically figure out that the same word Harry appearing at another position x<t> also might be a person's name?
 
 > This is similar to what we see in Convolutional Neural Networks, where we want things learned in one part of the image to generalize quickly to other parts of the image.
 

@@ -23,7 +23,7 @@ There are definitely some things which you cannot tell your friends; on which th
 
 Some people are too afraid to share with their friends. I was one of them at a dark point in my life. And I say it a point because it was just that, a point when I didn't trust people and didn't open up to anyone. If it were under my control, I would even keep things from myself. I was falling into depression and even thought about seeing a therapist. But I changed the narrative in my mind and reached out to some crazy people who are now my best friends. On the other hand, there are some who share anything with anyone. They just need an ear to unburden themselves of whatever is on their minds. We should do neither. "Trusting everyone is as much a fault as trusting no one".
 
-![group of people sitting on white mat on grass field](https://thenumbercrunch.com/wp-content/uploads/2022/03/pexels-photo-745045.jpeg)Photo by Helena Lopes on [Pexels.com](<https://www.pexels.com/photo/group-of-people-sitting-on-white-mat-on-grass-field-745045/>)
+![group of people sitting on white mat on grass field](https://images.pexels.com/photos/745045/pexels-photo-745045.jpeg)Photo by Helena Lopes on [Pexels.com](<https://www.pexels.com/photo/group-of-people-sitting-on-white-mat-on-grass-field-745045/>)
 
 ## Conclusion
 

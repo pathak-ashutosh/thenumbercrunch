@@ -2,7 +2,7 @@
 title: "Why Great Performers fall back on Objectivity?"
 date: 2022-04-05T19:06:32+00:00
 draft: false
-author: "dhruvpatel21"
+author: "dhruv"
 categories: ["Mental Health", "Productivity"]
 tags: ["achieve", "fall", "objective", "opinion", "perform", "philosophy", "successful"]
 ---
@@ -15,7 +15,7 @@ After this, I wondered how the best minds function. Do you know what the remarka
 
 ## **How do we miss out on the obvious?**
 
-[![](https://thenumbercrunch.com/wp-content/uploads/2022/04/pexels-energepiccom-313690-1-1024x768.jpg)](<https://www.pexels.com/photo/woman-sitting-in-front-of-macbook-313690/>)Photo by energepic.com
+[![](https://images.pexels.com/photos/313690/pexels-photo-313690.jpeg)](https://www.pexels.com/photo/woman-sitting-in-front-of-macbook-313690/)Photo by energepic.com
 
 [Objectivity ](<https://www.merriam-webster.com/dictionary/objectivity>)is associated with ideas such as facts, reality, and reliability. “Objectivity” and “Subjectivity” relate to a perceiving subject and a perceived or unperceived object. The solutions that likely exist are independent of the subject’s perception. Life today has not changed much and we humans frequently get stuck in this quicksand where we lose the objectivity to get ourselves out of the problem. We ignore the present by trading it with the dreams of the future. If we look through our lives from a different lens, we can see and consider the aspects of what is present in front of our eyes.
 
