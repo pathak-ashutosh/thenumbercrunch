@@ -5,37 +5,10 @@
     <p class="site-description">{{ .Site.Params.description }}</p>
   </div>
 
-  <div class="posts-list">
-    <h2>Recent Posts</h2>
-    {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
-    {{ range $paginator.Pages }}
-    <article class="post-preview">
-      <div class="post-meta">
-        <time>{{ .Date.Format "Jan 2, 2006" }}</time>
-        {{ with .Params.categories }}
-          {{ range . }}
-            <a class="category" href="{{ "/categories/" | absURL }}{{ . | urlize }}/">{{ . }}</a>
-          {{ end }}
-        {{ end }}
-      </div>
-      <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-      {{ with .Summary }}
-        <p class="post-summary">{{ . | plainify | truncate 200 }}</p>
-      {{ end }}
-    </article>
-    {{ end }}
-
-    {{ if gt $paginator.TotalPages 1 }}
-    <div class="pagination">
-      {{ if $paginator.HasPrev }}
-        <a href="{{ $paginator.Prev.URL }}">&larr; Newer</a>
-      {{ end }}
-      <span>Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
-      {{ if $paginator.HasNext }}
-        <a href="{{ $paginator.Next.URL }}">Older &rarr;</a>
-      {{ end }}
-    </div>
-    {{ end }}
+  <div class="home-content">
+    <p>Hi, I'm Ashutosh — a Software engineer documenting my tech journey.</p>
+    <p>I've worked across AI & ML engineering, data science, data engineering, DevOps, MLOps, and software testing. These days I spend most of my time shipping AI first features, building predictive models, and helping teams put AI to real use.</p>
+    <p>I write to break things down — to share what I understand, spot patterns, and think out loud about technology for my future self. If you find something useful here, that's a bonus.</p>
   </div>
 </div>
 {{ end }}
