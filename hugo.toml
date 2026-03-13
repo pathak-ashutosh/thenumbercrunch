@@ -11,10 +11,10 @@ paginate = 10
   math = false
   dark = false
 
-  # Social links (edit as needed)
-  # twitter = "yourhandle"
-  # github = "yourusername"
-  # linkedin = "yourprofile"
+  # Social links
+  # twitter = "https://x.com/pathak_jeee"
+  # github = "https://github.com/pathak-ashutosh"
+  # linkedin = "https://www.linkedin.com/in/pathak-ash/"
 
 [menu]
   [[menu.main]]
