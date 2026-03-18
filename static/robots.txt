@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /xmlrpc.php
+Allow: /
+
+Sitemap: https://thenumbercrunch.com/sitemap.xml
