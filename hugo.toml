@@ -7,7 +7,7 @@ paginate = 10
 
 [params]
   author = "Ashutosh Pathak"
-  description = "From data to insight."
+  description = "from Ashutosh Pathak"
   math = false
   dark = false
 
@@ -33,6 +33,10 @@ paginate = 10
     name = "About"
     url = "/pages/about/"
     weight = 4
+  [[menu.main]]
+    name = "Contact"
+    url = "/pages/contact/"
+    weight = 5
 
 [taxonomies]
   tag = "tags"
