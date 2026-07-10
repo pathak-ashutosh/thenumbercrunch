@@ -1,13 +1,18 @@
 <header>
   <nav>
-    <div class="nav-title">
-      <a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
-    </div>
+    <a class="nav-title" href="{{ .Site.BaseURL }}" aria-label="{{ .Site.Title }} home">
+      <img class="nav-logo" src="{{ "brand/number-mark.svg" | absURL }}" width="36" height="36" alt="" aria-hidden="true" />
+      <span class="nav-wordmark">
+        <strong>{{ .Site.Title }}</strong>
+        <small>Notes by Ashutosh Pathak</small>
+      </span>
+    </a>
     <div class="nav-links">
+      {{ $current := . }}
       {{ range .Site.Menus.main }}
-        <a href="{{ .URL | absURL }}">{{ .Name }}</a>
+        <a href="{{ .URL | absURL }}"{{ if or ($current.IsMenuCurrent "main" .) ($current.HasMenuCurrent "main" .) (and $current.IsHome (eq .URL "/")) (and (eq .URL "/posts/") (eq $current.Section "posts")) (eq $current.RelPermalink .URL) }} aria-current="page"{{ end }}>{{ .Name }}</a>
       {{ end }}
-      <button id="theme-toggle" aria-label="Toggle dark mode">☀</button>
+      <button id="theme-toggle" aria-label="Use dark theme" aria-pressed="false"><span aria-hidden="true">☀</span></button>
     </div>
   </nav>
 </header>

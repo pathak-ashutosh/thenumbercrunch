@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="The Number Crunch">
+  <rect width="64" height="64" fill="#172129"/>
+  <path fill="#F5F7FA" d="M21 10h6l-4 44h-6zM38 10h6l-4 44h-6z"/>
+  <path fill="#F5F7FA" d="M11 21h42l-1 7H10zM9 37h30l-1 7H8z"/>
+  <path fill="#E6553B" d="M42 39h14l-1 7H41z"/>
+</svg>

@@ -1,14 +1,49 @@
 {{ define "main" }}
 <div class="home">
-  <div class="site-intro">
-    <h1>Welcome</h1>
-    <p class="site-description">{{ .Site.Title }} {{ .Site.Params.description }}</p>
-  </div>
+  <section class="home-intro">
+    <div class="home-thesis">
+      <p class="home-kicker">Ashutosh Pathak &mdash; AI engineer</p>
+      <h1>I take systems apart to see what makes them useful.</h1>
+      <p class="site-description">Production AI, machine learning, data systems, and the awkward parts between a good demo and software people can trust.</p>
+      <p class="home-links"><a href="{{ "/posts/" | absURL }}">Browse the notes</a> <span>or</span> <a href="{{ "/pages/about/" | absURL }}">see what I&rsquo;m building</a>.</p>
+    </div>
 
-  <div class="home-content">
-    <p>Hi, I'm Ashutosh. A Software engineer documenting my tech journey.</p>
-    <p>I've worked across AI & ML engineering, data science, data engineering, DevOps, MLOps, and software testing. These days I spend most of my time shipping AI first features, building predictive models, and helping teams put AI to real use.</p>
-    <p>I write to break things down; to share what I understand, spot patterns, and think out loud about technology for my future self. If you find something useful here, that's a bonus.</p>
-  </div>
+    <aside class="bench-note" aria-labelledby="review-loop-title">
+      <p class="bench-note__eyebrow">How I test an AI idea</p>
+      <h2 id="review-loop-title">Four questions before I trust it</h2>
+      <ol class="bench-note__checks">
+        <li><strong>Problem</strong><span>What changes for the user?</span></li>
+        <li><strong>Evidence</strong><span>What beats the baseline?</span></li>
+        <li><strong>System</strong><span>What breaks outside the demo?</span></li>
+        <li><strong>Use</strong><span>Would anyone choose it twice?</span></li>
+      </ol>
+      <p class="bench-note__origin">I learned by opening computers and occasionally ruining the parts. The habit survived; the checklist got better.</p>
+    </aside>
+  </section>
+
+  {{ $posts := where (where .Site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
+  <section class="latest-notes">
+    <header class="section-heading">
+      <h2>Latest notes</h2>
+      <a href="{{ "/posts/" | absURL }}">All posts &rarr;</a>
+    </header>
+    <div class="home-posts">
+      {{ range first 5 $posts.ByDate.Reverse }}
+      <article class="home-post">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time>
+        <div>
+          <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+          {{ with .Summary }}<p>{{ . | plainify | truncate 145 }}</p>{{ end }}
+          <span>{{ .ReadingTime }} min read{{ with .Params.categories }} &middot; {{ index . 0 }}{{ end }}</span>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="working-premise">
+    <p>Working premise</p>
+    <blockquote>AI is only interesting when it survives contact with real users, real constraints, and inconvenient data.</blockquote>
+  </section>
 </div>
 {{ end }}

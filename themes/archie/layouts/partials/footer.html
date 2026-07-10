@@ -1,23 +1,28 @@
 <footer>
   <p>
-    &copy; {{ now.Year }} {{ .Site.Params.author | default .Site.Title }} &middot;
-    Powered by <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
-    Theme <a href="https://github.com/athul/archie" target="_blank" rel="noopener">Archie</a>
+    &copy; {{ now.Year }} {{ .Site.Params.author | default .Site.Title }}
+    <a class="footer-rss" href="{{ "/index.xml" | absURL }}">RSS feed</a>
   </p>
 </footer>
 
 <script>
   const toggle = document.getElementById('theme-toggle');
+  const toggleIcon = toggle.querySelector('span');
   const root = document.documentElement;
   const saved = localStorage.getItem('theme');
+  const setThemeButton = (dark) => {
+    toggleIcon.textContent = dark ? '☾' : '☀';
+    toggle.setAttribute('aria-pressed', String(dark));
+    toggle.setAttribute('aria-label', dark ? 'Use light theme' : 'Use dark theme');
+  };
   if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
     root.setAttribute('data-theme', 'dark');
-    toggle.textContent = '☾';
+    setThemeButton(true);
   }
   toggle.addEventListener('click', () => {
     const isDark = root.getAttribute('data-theme') === 'dark';
     root.setAttribute('data-theme', isDark ? 'light' : 'dark');
-    toggle.textContent = isDark ? '☀' : '☾';
+    setThemeButton(!isDark);
     localStorage.setItem('theme', isDark ? 'light' : 'dark');
   });
 </script>

@@ -31,4 +31,4 @@ This was the spark that ignited my dream of building things using software.
 
 I want to keep building AI systems that actually matter — not just demos, but production-grade tools that change how people work. On this blog, I aim to break down complex AI concepts so that more people can understand and leverage them, regardless of their background.
 
-I'm always open to connecting with fellow tech enthusiasts, potential collaborators, and anyone curious about the transformative power of AI. Find me on [LinkedIn](https://www.linkedin.com/in/pathak-ash/) or [X](https://x.com/pathak_jeee).
+I'm always open to talking with engineers, founders, and teams working through an AI or data problem. Find me on [LinkedIn](https://www.linkedin.com/in/pathak-ash/) or [X](https://x.com/pathak_jeee).

@@ -1,0 +1,20 @@
+{{- $title := .Get "title" | default "Change the inputs" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+{{- $tone := .Get "tone" | default "orange" -}}
+<figure class="crunch-interactive crunch-function crunch-tone-{{ $tone }}" data-crunch-function>
+  <header class="crunch-interactive__header">
+    <span class="crunch-interactive__kind">Crunchpad / function lab</span>
+    <h3>{{ $title }}</h3>
+    {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+  </header>
+  <div class="crunch-function__formula" data-function-formula aria-live="polite"></div>
+  <div class="crunch-function__controls" data-function-controls></div>
+  <div class="crunch-function__stage">
+    <canvas data-function-canvas role="img" aria-label="Interactive plot for {{ $title }}"></canvas>
+  </div>
+  <p class="crunch-sr-only" data-function-summary></p>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <script type="application/json" data-crunch-config>{{ .Inner | jsonify | safeJS }}</script>
+  <noscript><p class="crunch-noscript">Enable JavaScript to use this function lab.</p></noscript>
+</figure>

@@ -19,10 +19,12 @@
           {{ end }}
         {{ end }}
       </div>
-      <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-      {{ with .Summary }}
-        <p class="post-summary">{{ . | plainify | truncate 200 }}</p>
-      {{ end }}
+      <div class="post-preview__body">
+        <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+        {{ with .Summary }}
+          <p class="post-summary">{{ . | plainify | truncate 200 }}</p>
+        {{ end }}
+      </div>
     </article>
     {{ end }}
   </div>

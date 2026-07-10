@@ -7,7 +7,7 @@ paginate = 10
 
 [params]
   author = "Ashutosh Pathak"
-  description = "from Ashutosh Pathak"
+  description = "Production AI, machine learning, data systems, and the parts between demos and software people can trust."
   math = false
   dark = false
 
