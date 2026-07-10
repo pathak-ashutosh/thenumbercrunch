@@ -440,9 +440,13 @@ a.category:hover, a.category-tag:hover { border-color: var(--accent-alt); }
 
 .post-content pre code {
   background: none;
+  color: inherit;
   padding: 0;
   font-size: inherit;
 }
+
+/* Chroma's Monokai fences keep a dark inline background in both themes. */
+.post-content .highlight pre code { color: #f8f8f2; }
 
 /* --- Post Tags --- */
 .post-tags {
