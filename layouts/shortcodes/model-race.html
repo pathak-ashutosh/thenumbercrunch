@@ -1,0 +1,29 @@
+{{- $title := .Get "title" | default "Which model wins?" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+<figure class="crunch-interactive model-race crunch-tone-teal" data-model-race>
+  <header class="crunch-interactive__header">
+    <span class="crunch-interactive__kind">Agora / held-out model race</span>
+    <h3>{{ $title }}</h3>
+    {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+  </header>
+  <div class="model-race__controls">
+    <div class="caucus-segments" role="group" aria-label="Evaluation metric">
+      <button type="button" data-model-metric="ap" aria-pressed="true">PR-AUC</button>
+      <button type="button" data-model-metric="auc" aria-pressed="false">ROC-AUC</button>
+      <button type="button" data-model-metric="mrr" aria-pressed="false">MRR</button>
+      <button type="button" data-model-metric="r10" aria-pressed="false">Recall@10</button>
+    </div>
+    <label class="model-race__history">
+      <input type="checkbox" data-model-history checked />
+      <span>Include models that remember prior congresses</span>
+    </label>
+  </div>
+  <div class="model-race__grid">
+    <div class="model-race__chart" data-model-chart aria-live="polite"></div>
+    <aside class="model-race__note" data-model-note></aside>
+  </div>
+  <script type="application/json" data-crunch-config>{{ .Inner | jsonify | safeJS }}</script>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <noscript><p class="crunch-noscript">Enable JavaScript to compare models and metrics.</p></noscript>
+</figure>

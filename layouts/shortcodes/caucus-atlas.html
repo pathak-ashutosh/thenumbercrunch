@@ -1,0 +1,61 @@
+{{- $title := .Get "title" | default "The caucus atlas" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+<figure class="crunch-interactive caucus-atlas crunch-tone-violet" data-caucus-atlas data-source="{{ "data/caucus-atlas.json" | relURL }}">
+  <header class="crunch-interactive__header caucus-atlas__header">
+    <div>
+      <span class="crunch-interactive__kind">Agora / member space</span>
+      <h3>{{ $title }}</h3>
+      {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+    </div>
+    <div class="caucus-atlas__readout" aria-live="polite">
+      <strong data-atlas-congress>116th</strong>
+      <span data-atlas-count>Loading members…</span>
+    </div>
+  </header>
+
+  <div class="caucus-atlas__toolbar">
+    <div class="caucus-field caucus-field--timeline">
+      <label for="caucus-atlas-congress-{{ .Ordinal }}">Congress</label>
+      <div class="caucus-timeline-control">
+        <button class="crunch-button caucus-play" type="button" data-atlas-play aria-label="Play congress timeline">Play</button>
+        <input id="caucus-atlas-congress-{{ .Ordinal }}" class="crunch-range" type="range" min="0" max="12" value="12" step="1" data-atlas-slider />
+      </div>
+    </div>
+    <div class="caucus-field">
+      <span class="caucus-field__label">Color by</span>
+      <div class="caucus-segments" role="group" aria-label="Color members by">
+        <button type="button" data-atlas-mode="party" aria-pressed="true">Party</button>
+        <button type="button" data-atlas-mode="caucuses" aria-pressed="false">Caucus load</button>
+        <button type="button" data-atlas-mode="bridge" aria-pressed="false">Bridge</button>
+        <button type="button" data-atlas-mode="ideology" aria-pressed="false">Ideology</button>
+      </div>
+    </div>
+    <div class="caucus-field caucus-field--search">
+      <label for="caucus-atlas-search-{{ .Ordinal }}">Find a member</label>
+      <input id="caucus-atlas-search-{{ .Ordinal }}" type="search" placeholder="Name or state" autocomplete="off" data-atlas-search />
+    </div>
+  </div>
+
+  <div class="caucus-atlas__workspace">
+    <div class="caucus-atlas__stage">
+      <canvas data-atlas-canvas role="img" aria-label="Members positioned by similarity of their caucus portfolios"></canvas>
+      <div class="crunch-tooltip caucus-atlas__tooltip" data-atlas-tooltip role="status" hidden></div>
+      <div class="caucus-atlas__legend" data-atlas-legend></div>
+      <button class="caucus-atlas__reset" type="button" data-atlas-reset hidden>Reset view</button>
+    </div>
+    <aside class="caucus-atlas__detail" data-atlas-detail>
+      <span class="caucus-atlas__detail-kicker">How to read it</span>
+      <h4>Same neighborhood, similar caucus portfolios.</h4>
+      <p>Scrub time, recolor the map, hover any point, or search. Scroll to zoom; drag to pan.</p>
+      <dl>
+        <div><dt>617</dt><dd>active caucuses</dd></div>
+        <div><dt>27.5</dt><dd>median memberships</dd></div>
+        <div><dt>428</dt><dd>members with rosters</dd></div>
+      </dl>
+    </aside>
+  </div>
+  <p class="crunch-sr-only" data-atlas-summary></p>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <noscript><p class="crunch-noscript">Enable JavaScript to explore the member map.</p></noscript>
+</figure>

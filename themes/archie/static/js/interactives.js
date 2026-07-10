@@ -586,10 +586,397 @@
     render();
   }
 
+  function ordinal(value) {
+    const mod100 = value % 100;
+    const suffix = mod100 >= 11 && mod100 <= 13 ? "th" : ({ 1: "st", 2: "nd", 3: "rd" }[value % 10] || "th");
+    return `${value}${suffix}`;
+  }
+
+  function titleCaseName(value) {
+    return String(value || "")
+      .toLocaleLowerCase()
+      .replace(/(^|[\s'.-])([a-z])/g, (_, boundary, letter) => `${boundary}${letter.toUpperCase()}`)
+      .replace(/\bMc([a-z])/g, (_, letter) => `Mc${letter.toUpperCase()}`);
+  }
+
+  function hexToRgb(value) {
+    const match = String(value).trim().match(/^#([\da-f]{6})$/i);
+    if (!match) return null;
+    const number = Number.parseInt(match[1], 16);
+    return { r: number >> 16, g: (number >> 8) & 255, b: number & 255 };
+  }
+
+  function mixColors(start, end, amount) {
+    const a = hexToRgb(start);
+    const b = hexToRgb(end);
+    if (!a || !b) return amount < 0.5 ? start : end;
+    const mix = (key) => Math.round(a[key] + (b[key] - a[key]) * Math.max(0, Math.min(1, amount)));
+    return `rgb(${mix("r")}, ${mix("g")}, ${mix("b")})`;
+  }
+
+  function initCaucusAtlas(root) {
+    const canvas = select(root, "[data-atlas-canvas]");
+    const tooltip = select(root, "[data-atlas-tooltip]");
+    const detail = select(root, "[data-atlas-detail]");
+    const slider = select(root, "[data-atlas-slider]");
+    const play = select(root, "[data-atlas-play]");
+    const search = select(root, "[data-atlas-search]");
+    const legend = select(root, "[data-atlas-legend]");
+    const reset = select(root, "[data-atlas-reset]");
+    const congressReadout = select(root, "[data-atlas-congress]");
+    const countReadout = select(root, "[data-atlas-count]");
+    const summary = select(root, "[data-atlas-summary]");
+    const modeButtons = Array.from(root.querySelectorAll("[data-atlas-mode]"));
+    let data;
+    let points = [];
+    let hitTargets = [];
+    let congressIndex = 0;
+    let mode = "party";
+    let selected = null;
+    let timer = null;
+    let dragging = null;
+    let zoom = 1;
+    let pan = { x: 0, y: 0 };
+    let size = { width: 0, height: 0 };
+    const bounds = { minX: -0.66, maxX: 1.13, minY: -0.85, maxY: 1.13 };
+
+    function atlasColors() {
+      const styles = getComputedStyle(root);
+      return {
+        dem: styles.getPropertyValue("--caucus-dem").trim() || "#2f6bff",
+        rep: styles.getPropertyValue("--caucus-rep").trim() || "#ef5b5b",
+        other: styles.getPropertyValue("--caucus-other").trim() || "#9a78ff",
+        low: styles.getPropertyValue("--caucus-low").trim() || "#68d4c1",
+        high: styles.getPropertyValue("--caucus-high").trim() || "#ffb24a",
+        neutral: styles.getPropertyValue("--caucus-neutral").trim() || "#a5acb4",
+        grid: styles.getPropertyValue("--border").trim(),
+        foreground: styles.getPropertyValue("--fg").trim(),
+        muted: styles.getPropertyValue("--fg-muted").trim(),
+        surface: styles.getPropertyValue("--surface").trim()
+      };
+    }
+
+    function colorFor(point, colors, maxima) {
+      if (mode === "party") return point.p === "D" ? colors.dem : point.p === "R" ? colors.rep : colors.other;
+      if (mode === "caucuses") return mixColors(colors.low, colors.high, point.c / Math.max(1, maxima.caucuses));
+      if (mode === "bridge") return mixColors(colors.neutral, colors.other, Math.sqrt((point.b || 0) / Math.max(0.000001, maxima.bridge)));
+      if (point.i == null) return colors.neutral;
+      const ideology = Math.max(-1, Math.min(1, point.i));
+      return ideology < 0
+        ? mixColors(colors.dem, colors.neutral, ideology + 1)
+        : mixColors(colors.neutral, colors.rep, ideology);
+    }
+
+    function project(point) {
+      const padding = 24;
+      const plotWidth = Math.max(1, size.width - padding * 2);
+      const plotHeight = Math.max(1, size.height - padding * 2);
+      const normalizedX = (point.x - bounds.minX) / (bounds.maxX - bounds.minX) - 0.5;
+      const normalizedY = (point.y - bounds.minY) / (bounds.maxY - bounds.minY) - 0.5;
+      return {
+        x: size.width / 2 + normalizedX * plotWidth * zoom + pan.x,
+        y: size.height / 2 - normalizedY * plotHeight * zoom + pan.y
+      };
+    }
+
+    function matching(point) {
+      const query = search.value.trim().toLocaleLowerCase();
+      if (!query) return true;
+      return point.n.toLocaleLowerCase().includes(query) || point.s.toLocaleLowerCase() === query;
+    }
+
+    function updateLegend(colors, maxima) {
+      legend.replaceChildren();
+      if (mode === "party") {
+        [[colors.dem, "Dem"], [colors.rep, "Rep"], [colors.other, "Other"]].forEach(([color, label]) => {
+          const item = appendTextElement(legend, "span", "caucus-atlas__legend-item", label);
+          item.style.setProperty("--legend-color", color);
+        });
+        return;
+      }
+      const low = mode === "ideology" ? "Liberal" : "Low";
+      const high = mode === "ideology" ? "Conservative" : "High";
+      const ramp = document.createElement("span");
+      ramp.className = `caucus-atlas__ramp caucus-atlas__ramp--${mode}`;
+      ramp.style.setProperty("--ramp-low", mode === "ideology" ? colors.dem : colors.low);
+      ramp.style.setProperty("--ramp-high", mode === "ideology" ? colors.rep : (mode === "bridge" ? colors.other : colors.high));
+      appendTextElement(legend, "span", "", low);
+      legend.append(ramp);
+      appendTextElement(legend, "span", "", high);
+      if (mode === "ideology" && !points.some((point) => point.i != null)) {
+        appendTextElement(legend, "em", "", "No DW-NOMINATE in this Congress");
+      }
+      if (mode === "caucuses") ramp.title = `Range: 0–${maxima.caucuses} caucuses`;
+    }
+
+    function densityForCurrent() {
+      return data.density.find((item) => item.g === data.congresses[congressIndex]);
+    }
+
+    function renderDefaultDetail() {
+      const density = densityForCurrent();
+      detail.replaceChildren();
+      appendTextElement(detail, "span", "caucus-atlas__detail-kicker", `${ordinal(density.g)} Congress snapshot`);
+      appendTextElement(detail, "h4", "", "Same neighborhood, similar caucus portfolios.");
+      appendTextElement(detail, "p", "", "Party is visible, but it is not the only structure. Recolor the map or inspect a member.");
+      const list = document.createElement("dl");
+      [[density.caucuses, "active caucuses"], [density.median, "median memberships"], [density.members, "members with rosters"]].forEach(([value, label]) => {
+        const item = document.createElement("div");
+        appendTextElement(item, "dt", "", String(value));
+        appendTextElement(item, "dd", "", label);
+        list.append(item);
+      });
+      detail.append(list);
+    }
+
+    function renderMemberDetail(point) {
+      detail.replaceChildren();
+      appendTextElement(detail, "span", "caucus-atlas__detail-kicker", `${point.p} · ${point.s} · ${ordinal(point.g)} Congress`);
+      appendTextElement(detail, "h4", "", titleCaseName(point.n));
+      appendTextElement(detail, "p", "", "Position comes from the full caucus portfolio, not the party label.");
+      const list = document.createElement("dl");
+      const stats = [
+        [point.c, "caucus memberships"],
+        [point.q == null ? "—" : `${Math.round(point.q * 100)}%`, "cross-party neighbors"],
+        [point.i == null ? "—" : point.i.toFixed(2), "DW-NOMINATE"]
+      ];
+      stats.forEach(([value, label]) => {
+        const item = document.createElement("div");
+        appendTextElement(item, "dt", "", String(value));
+        appendTextElement(item, "dd", "", label);
+        list.append(item);
+      });
+      detail.append(list);
+    }
+
+    function draw() {
+      const canvasState = canvasContext(canvas);
+      const { context, width, height } = canvasState;
+      size = { width, height };
+      const colors = atlasColors();
+      const congress = data.congresses[congressIndex];
+      points = data.points.filter((point) => point.g === congress && point.c > 0);
+      const maxima = {
+        caucuses: Math.max(1, ...points.map((point) => point.c)),
+        bridge: Math.max(0.000001, ...points.map((point) => point.b || 0))
+      };
+      hitTargets = [];
+
+      context.save();
+      context.globalAlpha = 0.42;
+      context.strokeStyle = colors.grid;
+      context.lineWidth = 1;
+      for (let index = 1; index < 4; index += 1) {
+        const x = (width * index) / 4;
+        const y = (height * index) / 4;
+        context.beginPath(); context.moveTo(x, 0); context.lineTo(x, height); context.stroke();
+        context.beginPath(); context.moveTo(0, y); context.lineTo(width, y); context.stroke();
+      }
+      context.restore();
+
+      const hasQuery = Boolean(search.value.trim());
+      const sorted = [...points].sort((a, b) => Number(matching(a)) - Number(matching(b)));
+      sorted.forEach((point) => {
+        const position = project(point);
+        const isMatch = matching(point);
+        const isSelected = selected && selected.id === point.id;
+        if (position.x < -20 || position.x > width + 20 || position.y < -20 || position.y > height + 20) return;
+        context.globalAlpha = hasQuery && !isMatch ? 0.08 : (point.i == null && mode === "ideology" ? 0.28 : 0.78);
+        context.fillStyle = colorFor(point, colors, maxima);
+        context.beginPath();
+        context.arc(position.x, position.y, isSelected ? 7 : isMatch && hasQuery ? 5 : 2.8, 0, Math.PI * 2);
+        context.fill();
+        if (isSelected || (isMatch && hasQuery)) {
+          context.globalAlpha = 0.9;
+          context.strokeStyle = colors.foreground;
+          context.lineWidth = isSelected ? 2 : 1;
+          context.stroke();
+        }
+        hitTargets.push({ point, x: position.x, y: position.y });
+      });
+      context.globalAlpha = 1;
+
+      congressReadout.textContent = ordinal(congress);
+      countReadout.textContent = `${points.length} members · ${mode === "party" ? "party" : mode}`;
+      summary.textContent = `${points.length} members in the ${ordinal(congress)} Congress, positioned by similarity of caucus portfolios and colored by ${mode}.`;
+      updateLegend(colors, maxima);
+      reset.hidden = zoom === 1 && pan.x === 0 && pan.y === 0;
+    }
+
+    function nearest(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      return hitTargets.reduce((best, target) => {
+        const distance = Math.hypot(target.x - x, target.y - y);
+        return distance < 12 && (!best || distance < best.distance) ? { ...target, distance } : best;
+      }, null);
+    }
+
+    function stop() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+      play.textContent = "Play";
+      play.setAttribute("aria-label", "Play congress timeline");
+    }
+
+    function setCongress(index) {
+      congressIndex = Math.max(0, Math.min(data.congresses.length - 1, index));
+      slider.value = String(congressIndex);
+      selected = null;
+      tooltip.hidden = true;
+      renderDefaultDetail();
+      draw();
+    }
+
+    fetch(root.dataset.source)
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then((payload) => {
+        data = payload;
+        slider.max = String(data.congresses.length - 1);
+        congressIndex = data.congresses.length - 1;
+        setCongress(congressIndex);
+
+        slider.addEventListener("input", () => { stop(); setCongress(Number(slider.value)); });
+        play.addEventListener("click", () => {
+          if (timer) { stop(); return; }
+          if (congressIndex === data.congresses.length - 1) setCongress(0);
+          play.textContent = "Pause";
+          play.setAttribute("aria-label", "Pause congress timeline");
+          timer = window.setInterval(() => {
+            if (congressIndex >= data.congresses.length - 1) { stop(); return; }
+            setCongress(congressIndex + 1);
+          }, 900);
+        });
+        modeButtons.forEach((button) => button.addEventListener("click", () => {
+          mode = button.dataset.atlasMode;
+          modeButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+          draw();
+        }));
+        search.addEventListener("input", () => { selected = null; renderDefaultDetail(); draw(); });
+        search.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter") return;
+          const match = points.find(matching);
+          if (match) { selected = match; renderMemberDetail(match); draw(); }
+        });
+        canvas.addEventListener("pointermove", (event) => {
+          if (dragging) {
+            pan.x = dragging.panX + event.clientX - dragging.x;
+            pan.y = dragging.panY + event.clientY - dragging.y;
+            draw();
+            return;
+          }
+          const target = nearest(event);
+          if (!target) { tooltip.hidden = true; canvas.style.cursor = "grab"; return; }
+          canvas.style.cursor = "pointer";
+          tooltip.replaceChildren();
+          appendTextElement(tooltip, "strong", "", titleCaseName(target.point.n));
+          appendTextElement(tooltip, "span", "", `${target.point.p} · ${target.point.s} · ${target.point.c} caucuses`);
+          const rect = canvas.getBoundingClientRect();
+          tooltip.style.left = `${Math.max(80, Math.min(rect.width - 80, target.x))}px`;
+          tooltip.style.top = `${Math.max(48, target.y)}px`;
+          tooltip.hidden = false;
+        });
+        canvas.addEventListener("pointerleave", () => { if (!dragging) tooltip.hidden = true; });
+        canvas.addEventListener("click", (event) => {
+          if (dragging?.moved) return;
+          const target = nearest(event);
+          if (!target) return;
+          selected = target.point;
+          renderMemberDetail(target.point);
+          draw();
+        });
+        canvas.addEventListener("pointerdown", (event) => {
+          canvas.setPointerCapture(event.pointerId);
+          dragging = { x: event.clientX, y: event.clientY, panX: pan.x, panY: pan.y, moved: false };
+          canvas.style.cursor = "grabbing";
+        });
+        canvas.addEventListener("pointerup", (event) => {
+          if (dragging) dragging.moved = Math.hypot(event.clientX - dragging.x, event.clientY - dragging.y) > 4;
+          window.setTimeout(() => { dragging = null; canvas.style.cursor = "grab"; }, 0);
+        });
+        canvas.addEventListener("wheel", (event) => {
+          event.preventDefault();
+          const rect = canvas.getBoundingClientRect();
+          const pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+          const oldZoom = zoom;
+          zoom = Math.max(0.8, Math.min(5, zoom * (event.deltaY < 0 ? 1.16 : 0.86)));
+          const ratio = zoom / oldZoom;
+          pan.x = pointer.x - size.width / 2 - (pointer.x - size.width / 2 - pan.x) * ratio;
+          pan.y = pointer.y - size.height / 2 - (pointer.y - size.height / 2 - pan.y) * ratio;
+          draw();
+        }, { passive: false });
+        reset.addEventListener("click", () => { zoom = 1; pan = { x: 0, y: 0 }; draw(); });
+        new ResizeObserver(draw).observe(canvas);
+        observeTheme(draw);
+      })
+      .catch((error) => {
+        showError(root, "The caucus atlas data could not be loaded.");
+        console.error("Caucus atlas:", error);
+      });
+  }
+
+  function initModelRace(root) {
+    const config = readConfig(root);
+    if (!config || !Array.isArray(config.models)) return;
+    const chart = select(root, "[data-model-chart]");
+    const note = select(root, "[data-model-note]");
+    const history = select(root, "[data-model-history]");
+    const metricButtons = Array.from(root.querySelectorAll("[data-model-metric]"));
+    let metric = "ap";
+
+    function render() {
+      const models = config.models
+        .filter((model) => history.checked || !model.history)
+        .filter((model) => Number.isFinite(model[metric]))
+        .sort((a, b) => b[metric] - a[metric]);
+      const maximum = Math.max(...models.map((model) => model[metric]), 0.001);
+      chart.replaceChildren();
+      models.forEach((model, index) => {
+        const row = document.createElement("div");
+        row.className = `model-race__row${index === 0 ? " is-best" : ""}`;
+        appendTextElement(row, "span", "model-race__rank", String(index + 1).padStart(2, "0"));
+        appendTextElement(row, "span", "model-race__name", model.name);
+        const track = document.createElement("span");
+        track.className = "model-race__track";
+        const bar = document.createElement("span");
+        bar.className = "model-race__bar";
+        bar.style.width = `${(model[metric] / maximum) * 100}%`;
+        track.append(bar);
+        row.append(track);
+        appendTextElement(row, "strong", "model-race__value", Number(model[metric]).toFixed(3));
+        chart.append(row);
+      });
+
+      const best = models[0];
+      note.replaceChildren();
+      appendTextElement(note, "span", "caucus-atlas__detail-kicker", config.metrics?.[metric]?.label || metric);
+      appendTextElement(note, "h4", "", best.name);
+      appendTextElement(note, "p", "", config.metrics?.[metric]?.explanation || "Higher is better.");
+      const verdict = history.checked
+        ? (config.metrics?.[metric]?.historyVerdict || "History changes the ranking.")
+        : "With memory removed, the strongest available snapshot model rises to the top.";
+      appendTextElement(note, "strong", "model-race__verdict", verdict);
+    }
+
+    metricButtons.forEach((button) => button.addEventListener("click", () => {
+      metric = button.dataset.modelMetric;
+      metricButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+      render();
+    }));
+    history.addEventListener("change", render);
+    render();
+  }
+
   function initialize() {
     document.querySelectorAll("[data-crunch-chart]").forEach(initChart);
     document.querySelectorAll("[data-crunch-function]").forEach(initFunction);
     document.querySelectorAll("[data-crunch-stepper]").forEach(initStepper);
+    document.querySelectorAll("[data-caucus-atlas]").forEach(initCaucusAtlas);
+    document.querySelectorAll("[data-model-race]").forEach(initModelRace);
   }
 
   if (document.readyState === "loading") {
