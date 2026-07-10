@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">The Number Crunch social card</title>
+  <desc id="description">The Number Crunch logo, wordmark, and publication premise.</desc>
+  <rect width="1200" height="630" fill="#F5F7FA"/>
+  <g transform="translate(80 72) scale(.3125)">
+    <rect width="512" height="512" fill="#172129"/>
+    <path fill="#F5F7FA" d="M168 82h42l-26 348h-42zM302 82h42l-26 348h-42z"/>
+    <path fill="#F5F7FA" d="M92 170h330l-4 44H88zM78 292h232l-4 44H74z"/>
+    <path fill="#E6553B" d="M328 303h106l-4 44H324z"/>
+  </g>
+  <text x="282" y="136" fill="#172129" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">The Number Crunch</text>
+  <text x="284" y="177" fill="#65717C" font-family="Menlo, Consolas, monospace" font-size="15" letter-spacing="2.2">NOTES BY ASHUTOSH PATHAK</text>
+  <line x1="80" y1="286" x2="1120" y2="286" stroke="#172129" stroke-width="4"/>
+  <text x="80" y="389" fill="#172129" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-2">I take systems apart to see</text>
+  <text x="80" y="459" fill="#172129" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700" letter-spacing="-2">what makes them useful.</text>
+  <text x="82" y="552" fill="#255CD6" font-family="Menlo, Consolas, monospace" font-size="16" letter-spacing="1.5">THENUMBERCRUNCH.COM · AI · DATA · SOFTWARE</text>
+</svg>

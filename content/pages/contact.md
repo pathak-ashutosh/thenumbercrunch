@@ -5,14 +5,12 @@ draft: false
 author: "ashutosh"
 ---
 
-I would love to hear from you! If you have any questions, comments, or suggestions, please feel free to contact me using the form below. You can also find the link to my LinkedIn profile on the [About](<https://thenumbercrunch.com/about/>) page, so don't be shy to connect with me on LinkedIn as well!
+If you want to discuss an AI system, a possible collaboration, or something I wrote, send me a note. Include the problem or decision you are working through; context helps me give you a useful reply.
 
 {{< contact-form >}}
 
-## Social Media
+## Elsewhere
 
-You can also follow our page on social media to stay up-to-date with my latest posts on news, trends, and insights in the world of AI and machine learning. We are active on [LinkedIn](<https://www.linkedin.com/company/the-number-crunch>).
-
-We look forward to hearing from you!
-
-I hope this helps! You can find more articles [here](<https://thenumbercrunch.com/>). Let me know if you need any further assistance.
+- [LinkedIn](https://www.linkedin.com/in/pathak-ash/) for professional updates and collaboration.
+- [X](https://x.com/pathak_jeee) for shorter notes and experiments.
+- [The Number Crunch on LinkedIn](https://www.linkedin.com/company/the-number-crunch) for new post announcements.

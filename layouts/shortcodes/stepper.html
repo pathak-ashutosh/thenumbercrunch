@@ -1,0 +1,21 @@
+{{- $title := .Get "title" | default "Walk through it" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+{{- $tone := .Get "tone" | default "teal" -}}
+<figure class="crunch-interactive crunch-stepper crunch-tone-{{ $tone }}" data-crunch-stepper>
+  <header class="crunch-interactive__header">
+    <span class="crunch-interactive__kind" data-stepper-kind>Crunchpad / explainer</span>
+    <h3>{{ $title }}</h3>
+    {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+  </header>
+  <div class="crunch-stepper__progress" data-stepper-progress aria-hidden="true"></div>
+  <div class="crunch-stepper__workspace" data-stepper-workspace></div>
+  <div class="crunch-stepper__controls">
+    <button type="button" class="crunch-button" data-stepper-previous>&larr; Previous</button>
+    <span data-stepper-count aria-live="polite"></span>
+    <button type="button" class="crunch-button crunch-button--primary" data-stepper-next>Next &rarr;</button>
+  </div>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <script type="application/json" data-crunch-config>{{ .Inner | jsonify | safeJS }}</script>
+  <noscript><p class="crunch-noscript">Enable JavaScript to use this step-by-step explainer.</p></noscript>
+</figure>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">The Number Crunch number mark</title>
+  <desc id="description">A custom number sign with its lower-right bar pulled out in coral.</desc>
+  <path fill="#172129" d="M168 82h42l-26 348h-42zM302 82h42l-26 348h-42z"/>
+  <path fill="#172129" d="M92 170h330l-4 44H88zM78 292h232l-4 44H74z"/>
+  <path fill="#E6553B" d="M328 303h106l-4 44H324z"/>
+</svg>

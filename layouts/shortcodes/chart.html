@@ -1,0 +1,20 @@
+{{- $title := .Get "title" | default "Explore the data" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+{{- $tone := .Get "tone" | default "blue" -}}
+<figure class="crunch-interactive crunch-chart crunch-tone-{{ $tone }}" data-crunch-chart>
+  <header class="crunch-interactive__header">
+    <span class="crunch-interactive__kind">Crunchpad / chart</span>
+    <h3>{{ $title }}</h3>
+    {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+  </header>
+  <div class="crunch-chart__legend" data-chart-legend aria-label="Chart series"></div>
+  <div class="crunch-chart__stage">
+    <canvas data-chart-canvas role="img" aria-label="{{ $title }}"></canvas>
+    <div class="crunch-tooltip" data-chart-tooltip role="status" hidden></div>
+  </div>
+  <p class="crunch-sr-only" data-chart-summary></p>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <script type="application/json" data-crunch-config>{{ .Inner | jsonify | safeJS }}</script>
+  <noscript><p class="crunch-noscript">Enable JavaScript to use this chart.</p></noscript>
+</figure>

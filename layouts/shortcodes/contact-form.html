@@ -1,27 +1,3 @@
-<style>
-.contact-form { max-width: 560px; margin: 2rem 0; }
-.form-group { margin-bottom: 1.2rem; }
-.form-group label { display: block; margin-bottom: .4rem; font-weight: 600; font-size: .95rem; }
-.form-group input,
-.form-group textarea {
-  width: 100%; padding: .6rem .8rem; font-size: 1rem;
-  border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
-  font-family: inherit; background: inherit; color: inherit;
-}
-.form-group textarea { resize: vertical; }
-.form-group input:focus,
-.form-group textarea:focus { outline: none; border-color: #555; }
-.contact-submit {
-  margin-top: .8rem; padding: .6rem 1.4rem; font-size: 1rem;
-  cursor: pointer; border: 1px solid #555; border-radius: 4px;
-  background: inherit; color: inherit; font-family: inherit;
-}
-.contact-submit:hover { background: #555; color: #fff; }
-.contact-submit:disabled { opacity: .6; cursor: not-allowed; }
-.form-success { color: #2a7a2a; margin-top: 1rem; }
-.form-error   { color: #b00020; margin-top: 1rem; }
-</style>
-
 <form id="contact-form" action="https://formspree.io/f/meernryl" method="POST" class="contact-form" novalidate>
   <!-- honeypot -->
   <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
@@ -43,8 +19,8 @@
 
   <div class="h-captcha" data-sitekey="94ea2bd0-6cf0-48a6-a8d2-9960c99cd046"></div>
 
-  <button type="submit" class="contact-submit">Send</button>
-  <div id="cf-status" role="status"></div>
+  <button type="submit" class="contact-submit">Send message</button>
+  <div id="cf-status" class="form-status" role="status"></div>
 </form>
 
 <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
@@ -52,20 +28,24 @@
 (function () {
   var form = document.getElementById('contact-form');
   var status = document.getElementById('cf-status');
+  function setStatus(message, type) {
+    status.textContent = message;
+    status.className = 'form-status' + (type ? ' form-' + type : '');
+  }
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     var token = form.querySelector('[name="h-captcha-response"]');
     if (!token || !token.value) {
-      status.innerHTML = '<p class="form-error">Please complete the CAPTCHA.</p>';
+      setStatus('Please complete the CAPTCHA.', 'error');
       return;
     }
 
     var btn = form.querySelector('.contact-submit');
     btn.disabled = true;
     btn.textContent = 'Sending…';
-    status.innerHTML = '';
+    setStatus('', '');
 
     try {
       var res = await fetch(form.action, {
@@ -75,18 +55,18 @@
       });
 
       if (res.ok) {
-        status.innerHTML = '<p class="form-success">Thanks! I\'ll get back to you soon.</p>';
+        setStatus('Message sent. I\'ll get back to you soon.', 'success');
         form.reset();
         if (typeof hcaptcha !== 'undefined') hcaptcha.reset();
       } else {
         var json = await res.json();
-        status.innerHTML = '<p class="form-error">' + (json.error || 'Something went wrong. Please try again.') + '</p>';
+        setStatus(json.error || 'Message not sent. Please try again.', 'error');
       }
     } catch (_) {
-      status.innerHTML = '<p class="form-error">Something went wrong. Please try again.</p>';
+      setStatus('Message not sent. Check your connection and try again.', 'error');
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Send';
+      btn.textContent = 'Send message';
     }
   });
 }());
