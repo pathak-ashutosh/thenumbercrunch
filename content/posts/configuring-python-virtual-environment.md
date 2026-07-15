@@ -5,11 +5,40 @@ draft: false
 author: "ashutosh"
 categories: ["Python", "Tech"]
 tags: ["environment", "python", "virtual"]
+interactive: true
 ---
 
 In my [previous article](<https://thenumbercrunch.com/how-to-install-python-on-macos/>), I mentioned installing virtualenv to isolate environments and using them instead of using the global python environment for specific projects. The process of installing and configuring virtual environments is fairly easy, but I instructed you guys to follow [Corey Schafer's video](<https://www.youtube.com/watch?v=N5vscPTWKOk&t=1s>) in order to do so. Well, here I explain similar steps in short.
 
 Virtualenv is a tool used to isolate specific Python environments on a single machine, allowing you to work on multiple projects with different dependencies and packages without conflict. It is particularly useful when you have multiple Python projects with conflicting package requirements. This article will go through the steps to set up and use virtualenv with Python.
+
+Here is the whole workflow at a glance—step through it once, then read the details below:
+
+{{< stepper
+  title="A virtual environment, one command at a time"
+  description="Follow a full session: create an isolated environment, install into it, and step back out."
+  tone="teal"
+  caption="Everything installed while the environment is active lives only inside its folder. Deactivating returns you to the global Python, with none of those packages."
+>}}
+{
+  "mode": "code",
+  "language": "Terminal",
+  "code": [
+    "pip install virtualenv",
+    "virtualenv env",
+    "source env/bin/activate",
+    "pip install numpy",
+    "deactivate"
+  ],
+  "steps": [
+    {"line": 1, "title": "Install the tool", "explanation": "virtualenv is what creates isolated environments. You install it once, globally.", "state": {"scope": "global", "prompt": "$"}},
+    {"line": 2, "title": "Create the environment", "explanation": "Makes a new folder (here named 'env') with its own Python and package space. You can name it anything.", "state": {"new folder": "env/", "packages inside": "none yet"}},
+    {"line": 3, "title": "Activate it", "explanation": "The prompt changes to show the active environment. From here on, pip and python point inside 'env'.", "state": {"prompt": "(env) $", "active": "yes"}},
+    {"line": 4, "title": "Install in isolation", "explanation": "numpy lands inside 'env' only—your global Python and every other project stay untouched.", "state": {"numpy": "installed in env/", "global python": "unchanged"}},
+    {"line": 5, "title": "Step back out", "explanation": "Deactivating restores the normal prompt. Run 'pip list' now and numpy is gone—it never left the environment.", "state": {"prompt": "$", "numpy visible?": "no"}}
+  ]
+}
+{{< /stepper >}}
 
 ## Setting up virtualenv
 

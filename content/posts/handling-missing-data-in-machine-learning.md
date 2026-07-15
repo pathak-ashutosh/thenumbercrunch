@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Machine Learning", "Python", "Tech"]
 tags: ["artificial intelligence", "data", "machine learning", "missing data", "pandas", "python", "sklearn"]
+interactive: true
 ---
 
 Dealing with missing data is a common challenge in machine learning, as it can have a significant impact on the accuracy and reliability of the model. There are several approaches to handling missing values, and it is important to choose the most appropriate one for your dataset and machine learning task. In this article, we will discuss some important ways to handle missing values in machine learning.
@@ -70,7 +71,58 @@ Here is an example of how to handle missing data using the imputation method in 
     # Apply the imputation
     df_imputed = imputer.transform(df)
 
+Here is what `fit` then `transform` actually does to a tiny table with two holes in it:
+
+{{< stepper
+  title="Fill the gaps with mean imputation"
+  description="Follow two columns with missing values through SimpleImputer(strategy='mean')."
+  tone="teal"
+  caption="Mean imputation keeps every row but pulls each missing entry onto the column average—fine for roughly symmetric data, risky when the column is skewed or has outliers."
+>}}
+{
+  "mode": "code",
+  "language": "Python",
+  "code": [
+    "imputer = SimpleImputer(strategy='mean')",
+    "imputer.fit(df)          # learn each column's mean",
+    "df_imputed = imputer.transform(df)"
+  ],
+  "steps": [
+    {"line": 1, "title": "Two columns, two holes", "explanation": "Age is missing one value; Salary is missing another. Dropping these rows would also throw away the real data sitting in the other column.", "state": {"Age": "[25, NaN, 35, 40]", "Salary": "[50, 60, NaN, 80]"}},
+    {"line": 2, "title": "Learn the fill values", "explanation": "'fit' computes the mean of each column using only the values that are actually present.", "state": {"Age mean": "33.3", "Salary mean": "63.3"}},
+    {"line": 3, "title": "Fill and return", "explanation": "'transform' drops each learned mean into that column's holes. Every row survives—but the imputed points now sit exactly on the average, shrinking the column's spread.", "state": {"Age": "[25, 33.3, 35, 40]", "Salary": "[50, 60, 63.3, 80]"}}
+  ]
+}
+{{< /stepper >}}
+
 It is important to carefully consider the impact of imputing missing values on your dataset and your machine learning task. The appropriate imputation strategy will depend on the characteristics of the data and the requirements of the model. Mean imputation may work well if the data is approximately normally distributed, but may not work well if the data is heavily skewed or has outliers. Median imputation may be a more robust approach when the data is skewed or has outliers. Most frequent imputation is suitable for categorical data, but may not be appropriate for continuous data. Constant imputation can be useful for preserving the structure of the data, but may not be representative of the underlying distribution.
+
+Which strategy? One outlier is often enough to decide:
+
+{{< chart
+  title="One outlier drags the mean"
+  description="Hover a bar for the exact salary. The dashed lines mark what mean and median imputation would write into every missing cell."
+  tone="orange"
+  caption="Six salaries, one of them an executive's. The mean fill, $82.3k, is higher than five of the six real values; the median fill, $53k, stays with the crowd. Skewed columns like income are why strategy='median' is often the safer default."
+>}}
+{
+  "type": "bar",
+  "labels": ["Emp 1", "Emp 2", "Emp 3", "Emp 4", "Emp 5", "Exec"],
+  "xLabel": "Employee",
+  "yLabel": "Salary",
+  "yDomain": [0, 260],
+  "decimals": 0,
+  "valuePrefix": "$",
+  "valueSuffix": "k",
+  "series": [
+    {"name": "Recorded salary", "color": "teal", "values": [42, 48, 51, 55, 58, 240]}
+  ],
+  "refLines": [
+    {"value": 82.3, "label": "mean fill · $82.3k", "color": "orange"},
+    {"value": 53, "label": "median fill · $53k", "color": "blue"}
+  ]
+}
+{{< /chart >}}
 
 ## Prediction
 

@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Deep Learning", "Machine Learning", "NLP", "Tech"]
 tags: ["artificial intelligence", "machine learning", "nlp"]
+interactive: true
 ---
 
 Sequence models are a class of machine learning models designed for the tasks that involve sequential data, where the order of elements in the input is important. There are many kinds of sequential data, like textual data, time series data, audio signals, video streams or any ordered data. These sequences are usually of varying lengths and the elements are dependent on each other. [[1](<https://aiml.com/what-are-sequence-models-key-algorithms-and-their-applications/>)]
@@ -22,15 +23,37 @@ Given this input **x** , we want our model to output let's say **y** , that has 
 **y** : [1 1 0 1 1 0 0 0 0]  
 There are also some representations that tell us the start and end of names in the sentence, but let's focus on the above output representation for simplicity.
 
-**x** :| Harry| Potter| and| Hermione| Granger| invented| a| new| spell| .  
----|---|---|---|---|---|---|---|---|---|---  
-| x<1>| x<2>| x<3>| x<4>| x<5>| x<6>| x<7>| x<8>| x<9>| x<10>  
-Tx=9 **y** :| 1| 1| 0| 1| 1| 0| 0| 0| 0| 0  
----|---|---|---|---|---|---|---|---|---|---  
-| y<1>| y<2>| y<3>| y<4>| y<5>| y<6>| y<7>| y<8>| y<9>| y<10>  
-Ty=9
+|       | Harry      | Potter     | and        | Hermione   | Granger    | invented   | a          | new        | spell      | .           |
+|-------|------------|------------|------------|------------|------------|------------|------------|------------|------------|-------------|
+| **x** | x&lt;1&gt; | x&lt;2&gt; | x&lt;3&gt; | x&lt;4&gt; | x&lt;5&gt; | x&lt;6&gt; | x&lt;7&gt; | x&lt;8&gt; | x&lt;9&gt; | x&lt;10&gt; |
+| **y** | 1          | 1          | 0          | 1          | 1          | 0          | 0          | 0          | 0          | 0           |
+
+*Tx = 9 and Ty = 9.*
 
 In this case Tx = Ty but that's not always the case.
+
+Step through the same sentence to see how the label for each word gets decided:
+
+{{< stepper
+  title="Label a sentence the way a sequence model does"
+  description="One output per input word: 1 if the word is part of a person's name, 0 otherwise."
+  tone="teal"
+  caption="This is the named-entity-recognition example from above. A sequence model reads the words in order, so context—not the word in isolation—decides each label."
+>}}
+{
+  "mode": "code",
+  "language": "tokens",
+  "code": ["Harry", "Potter", "and", "Hermione", "Granger", "invented", "a", "new", "spell", "."],
+  "steps": [
+    {"line": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "title": "One label per word", "explanation": "The model emits a sequence y the same length as the input x. Every word gets a 0 or a 1.", "state": {"input length Tx": 10, "output length Ty": 10}},
+    {"line": [1, 2], "title": "Harry Potter -> name", "explanation": "Both tokens are part of a person's name, so both get a 1. Because the model shares features across positions, what it learns about 'Harry' here transfers to 'Harry' anywhere else.", "state": {"Harry": 1, "Potter": 1}},
+    {"line": [3], "title": "and -> not a name", "explanation": "A function word joining two names. Label 0.", "state": {"and": 0}},
+    {"line": [4, 5], "title": "Hermione Granger -> name", "explanation": "A second person's name, again spanning two tokens. Labels 1, 1.", "state": {"Hermione": 1, "Granger": 1}},
+    {"line": [6, 7, 8, 9, 10], "title": "The rest -> 0", "explanation": "Verb, article, adjective, noun, punctuation—none of them name a person.", "state": {"invented a new spell .": "0 0 0 0 0"}},
+    {"line": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "title": "The finished sequence", "explanation": "Read top to bottom, the labels are exactly the y vector from the table above.", "state": {"y": "[1 1 0 1 1 0 0 0 0 0]"}}
+  ]
+}
+{{< /stepper >}}
 
 ## Notations
 

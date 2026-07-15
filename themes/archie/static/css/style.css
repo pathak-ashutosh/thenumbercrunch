@@ -383,6 +383,36 @@ a.category:hover, a.category-tag:hover { border-color: var(--accent-alt); }
   margin: 2rem 0;
 }
 
+.post-content table {
+  border-collapse: collapse;
+  display: block;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 1.5rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+  width: fit-content;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid var(--border);
+  padding: 0.45rem 0.85rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.post-content th {
+  background: var(--surface);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.post-content tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+
 /* --- Contact Form --- */
 .contact-form { margin: 2rem 0; max-width: 560px; }
 .form-group { margin-bottom: 1.2rem; }

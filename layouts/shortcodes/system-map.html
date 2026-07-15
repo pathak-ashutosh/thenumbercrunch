@@ -1,0 +1,29 @@
+{{- $title := .Get "title" | default "The whole system" -}}
+{{- $description := .Get "description" -}}
+{{- $caption := .Get "caption" -}}
+{{- $tone := .Get "tone" | default "orange" -}}
+{{- $config := .Inner | transform.Unmarshal -}}
+<figure class="crunch-interactive crunch-system crunch-tone-{{ $tone }}" data-crunch-system>
+  <header class="crunch-interactive__header">
+    <span class="crunch-interactive__kind">Crunchpad / system map</span>
+    <h3>{{ $title }}</h3>
+    {{ with $description }}<p>{{ . | markdownify }}</p>{{ end }}
+  </header>
+  <div class="crunch-system__grid" role="group" aria-label="{{ $title }}">
+    {{- range $config.blocks }}
+    <button type="button" class="crunch-system__block{{ if .focus }} is-focus{{ end }}"
+      data-system-block
+      {{- if .focus }} data-system-initial{{ end }}
+      data-name="{{ .name }}"
+      data-note="{{ .note }}"
+      data-share="{{ .share }}"
+      title="{{ .note }}"
+      style="{{ printf "grid-column: span %d; grid-row: span %d;" (int .cols) (int .rows) | safeCSS }}">
+      <span>{{ .name }}</span>
+    </button>
+    {{- end }}
+  </div>
+  <div class="crunch-system__detail" data-system-detail aria-live="polite"></div>
+  {{ with $caption }}<figcaption>{{ . | markdownify }}</figcaption>{{ end }}
+  <noscript><p class="crunch-noscript">Hover a block to read its role. Enable JavaScript for the full inspector.</p></noscript>
+</figure>

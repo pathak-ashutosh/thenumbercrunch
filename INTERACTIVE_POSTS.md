@@ -35,6 +35,8 @@ The full working examples live in `content/posts/interactive-playground.md`.
 
 - `type`: `line`, `bar`, or `scatter`. Scatter values are `[x, y]` pairs.
 - Optional: `xDomain`, `yDomain`, `format`, `currency`, `decimals`, `valuePrefix`, `valueSuffix`.
+- Optional `refLines`: `[{"value": 0.99, "label": "target", "color": "orange"}]` draws dashed
+  annotation lines. They are not legend series—use them for targets, baselines, and thresholds.
 - Colors: `blue`, `orange`, `teal`, `violet`, or any CSS color.
 - Readers can toggle series and hover points/bars.
 
@@ -55,6 +57,10 @@ The full working examples live in `content/posts/interactive-playground.md`.
 ```
 
 Expressions support numbers, variables, `+ - * / ^`, parentheses, `pi`, `e`, and `sin`, `cos`, `tan`, `exp`, `log`, `sqrt`, `abs`, `sigmoid`.
+
+Optional `points`: `[[x, y], ...]` draws fixed data dots and a live mean-squared-error readout,
+turning the lab into a fit-by-hand exercise. `lossLabel` renames the readout; `lossDecimals`
+controls its precision.
 
 ## Proof or code stepper
 
@@ -88,6 +94,26 @@ Program trace:
 ```
 
 `line` is one line number or an array of line numbers. `state` accepts any key/value pairs.
+
+## System map
+
+For part-of-a-whole and composition claims (a Venn/containment idea), not quantities:
+
+```go-html-template
+{{</* system-map title="Find the ML on this map" tone="orange" */>}}
+{
+  "blocks": [
+    {"name": "Data Collection", "share": "the raw material", "note": "What this block does.", "cols": 4, "rows": 2},
+    {"name": "ML Code", "share": "≈ 5-10%", "note": "The focus block.", "cols": 2, "rows": 1, "focus": true}
+  ]
+}
+{{</* /system-map */>}}
+```
+
+- Blocks lay out on a 12-column grid; `cols`/`rows` are spans. Make each visual row sum to 12.
+- `focus: true` tints the block with the tone color and selects it on load.
+- `share` is the kicker shown in the detail panel; `note` is the explanation.
+- Blocks are server-rendered, so the map still shows without JavaScript.
 
 ## Visual options
 

@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Deep Learning", "Tech"]
 tags: ["article", "callbacks", "deep-learning", "howto", "machine-learning", "model", "neural-networks", "training"]
+interactive: true
 ---
 
 A big question while training a neural network model is to figure out when to stop training it. We can achieve this using callbacks. But **why would you stop training your model before all the epochs are complete?**
@@ -68,6 +69,30 @@ The above code shows how we usually train a model without using callbacks. As yo
     <tensorflow.python.keras.callbacks.History at 0x7f1d28f305f8>
 
 Training for 10 epochs is not a big deal here, given the size of the dataset. But suppose you have a fairly large dataset containing 100s of gigabytes of information. In this case, instead of training for all 10 epochs, we would like to train just until it reaches 99% accuracy. As we can see that the increments after that are very small. Hence, training your entire dataset for more epochs just to gain 0.01% accuracy is not worth the time or the resources (unless of course it's absolutely required).
+
+The plateau is easier to see than to describe. Plot the accuracy from that run against the 99% target and the wasted effort jumps out:
+
+{{< chart
+  title="Why training past epoch 5 is wasted compute"
+  description="Hover any epoch to read its exact accuracy. The dashed line is the 99% threshold where the callback halts training."
+  tone="orange"
+  caption="Exact per-epoch accuracy from the MNIST run above. The curve crosses the target at epoch 5 and the callback stops there—epochs 6 through 10 would buy roughly half a percent for double the compute."
+>}}
+{
+  "type": "line",
+  "labels": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  "xLabel": "Epoch",
+  "yLabel": "Training accuracy",
+  "yDomain": [0.93, 1.0],
+  "decimals": 3,
+  "series": [
+    {"name": "Accuracy", "color": "teal", "values": [0.9402, 0.9745, 0.9833, 0.9873, 0.9912, 0.9934, 0.9943, 0.9956, 0.9955, 0.9958]}
+  ],
+  "refLines": [
+    {"value": 0.99, "label": "99% target — callback fires", "color": "orange"}
+  ]
+}
+{{< /chart >}}
 
 ### With callback
     

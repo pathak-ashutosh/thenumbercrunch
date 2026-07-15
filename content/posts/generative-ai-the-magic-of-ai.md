@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Deep Learning", "Generative AI", "Tech"]
 tags: ["artificial intelligence", "generative ai", "gpt", "llm", "machine learning"]
+interactive: true
 ---
 
 Imagine being able to create realistic images of people who don't exist, catchy headlines for any topic, or original music in any style. Sounds like science fiction, right? Well, not anymore. Thanks to generative AI, a subfield of artificial intelligence that can generate new data instances that resemble human-created content, these tasks are now possible and even easy.
@@ -14,6 +15,33 @@ Generative AI is one of the most exciting and rapidly evolving areas of machine 
 ## Generative Adversarial Networks (GANs)
 
 One of the most popular and powerful frameworks for generative AI is Generative Adversarial Networks (GANs). GANs are composed of two neural networks that compete against each other: a generator and a discriminator. The generator tries to create fake data that looks like the real data, while the discriminator tries to tell apart the real data from the fake data. The two networks are trained together in a game-like scenario, where the generator tries to fool the discriminator, and the discriminator tries to catch the generator. Over time, both networks improve their skills and the generator produces more and more realistic data.
+
+The "game" is easier to grasp one round at a time. Step through a single training round:
+
+{{< stepper
+  title="The generator-discriminator game"
+  description="Watch the two networks in a GAN push each other to improve, round after round."
+  tone="violet"
+  caption="A GAN trains two networks against each other. As the discriminator sharpens, the generator is forced to produce more convincing fakes—ideally until the two reach a stalemate at realistic output."
+>}}
+{
+  "mode": "code",
+  "language": "GAN training round",
+  "code": [
+    "noise -> generator -> fake sample",
+    "real + fake -> discriminator -> real? or fake?",
+    "discriminator loss -> update discriminator",
+    "generator loss -> update generator"
+  ],
+  "steps": [
+    {"line": 1, "title": "Generator invents", "explanation": "The generator turns random noise into a fake sample—say, a face of a person who doesn't exist.", "state": {"input": "random noise", "output": "fake sample"}},
+    {"line": 2, "title": "Discriminator judges", "explanation": "The discriminator sees a mix of real training data and the generator's fakes, and guesses which is which.", "state": {"sees": "real + fake", "guess": "real / fake"}},
+    {"line": 3, "title": "Reward the critic", "explanation": "Every catch sharpens the discriminator—it gets better at spotting the tells of a fake.", "state": {"discriminator": "improves", "asks": "was I fooled?"}},
+    {"line": 4, "title": "Punish the forger", "explanation": "The generator is updated to fool the now-sharper discriminator next round. Both climb together.", "state": {"generator": "improves", "target": "fool the critic"}},
+    {"line": [1, 2, 3, 4], "title": "Repeat to a stalemate", "explanation": "Thousands of rounds later, the fakes are realistic enough that the discriminator does no better than a coin flip. That's a trained GAN—if it doesn't collapse first.", "state": {"ideal end": "discriminator ~50% accuracy", "failure mode": "mode collapse"}}
+  ]
+}
+{{< /stepper >}}
 
 GANs have many advantages over other generative models, such as being able to generate high-quality and diverse data, being able to learn from unlabeled data, and being able to model complex and multimodal distributions. However, GANs also face some challenges, such as being difficult to train, suffering from mode collapse, and requiring a lot of computational resources. GANs have been used to generate impressive results on image, text, and video generation. For example, GANs can create realistic faces of people who do not exist , generate captions for images , and synthesize videos of people doing actions they never did . GANs have also been used for various applications, such as image editing, style transfer, data augmentation, anomaly detection, and super-resolution. GANs are one of the most exciting and influential developments in generative AI, and they continue to inspire new research and innovation.
 
@@ -45,6 +73,27 @@ In response to this situation, some researchers and developers have started to c
   - Vicuna: This is a fine-tuned version of LLaMA that matches ChatGPT-4 performance. Vicuna was created by a group of researchers from Stanford University, who used LoRa (Low-Rank adaptation), a technique that reduces the computational cost and resources required to train a model. Vicuna was released in February 2023 as an open source project.
   - Koala: This is a model from Berkeley AI Research Institute (BAIR), which has 13 billion parameters and can generate text on any topic. Koala was trained on a large and diverse dataset called Colossal -AI Corpus, which contains over 100 billion words from various sources, such as books, news articles, social media posts, and scientific papers. Koala was released in March 2023 as an open source project.
   - ColossalChat: This is a ChatGPT-type model that is part of the Colossal -AI project from UC Berkeley. ColossalChat has 9 billion parameters and can generate conversational text on any topic. ColossalChat was trained on a large and diverse dataset called Colossal -AI Dialogue Corpus, which contains over 10 billion words from various sources, such as Reddit comments, movie scripts, customer reviews, and chat logs. [ColossalChat was released in April 2023 as an open source project](<https://venturebeat.com/ai/with-a-wave-of-new-llms-open-source-ai-is-having-a-moment-and-a-red-hot-debate/>).
+
+Line the open models up against the proprietary giant they were chasing:
+
+{{< chart
+  title="Open models next to the giant they chase"
+  description="Parameter counts as reported in this article. Hover any bar for the exact figure."
+  tone="teal"
+  caption="Figures as stated in this post. ChatGPT-4's reported 175B dwarfs the early open-source models—yet Vicuna, a fine-tune of LLaMA, was reported to approach ChatGPT-4's quality, a reminder that raw parameter count isn't the whole story."
+>}}
+{
+  "type": "bar",
+  "labels": ["ChatGPT-4", "Koala", "LLaMA", "ColossalChat"],
+  "yLabel": "Parameters (billions)",
+  "yDomain": [0, 185],
+  "decimals": 0,
+  "valueSuffix": "B",
+  "series": [
+    {"name": "Parameters (billions)", "color": "blue", "values": [175, 13, 12, 9]}
+  ]
+}
+{{< /chart >}}
 
 These are just some examples of the recent open source leaps in LLMs that are tied to generative AI. These models demonstrate the power and potential of open source technology for advancing AI research and innovation. They also show the importance of ethical and social awareness for developing and using generative AI technology.
 

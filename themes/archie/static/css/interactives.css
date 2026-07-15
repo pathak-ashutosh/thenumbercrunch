@@ -161,6 +161,32 @@
 .crunch-range-value { color: var(--crunch-tone); font-family: var(--font-mono); }
 .crunch-range { accent-color: var(--crunch-tone); cursor: pointer; width: 100%; }
 
+.crunch-function__loss {
+  align-items: baseline;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--crunch-tone);
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.crunch-function__loss span {
+  color: var(--fg-muted);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.crunch-function__loss strong {
+  color: var(--crunch-tone);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
 .crunch-stepper__progress { display: flex; gap: 0.35rem; margin-bottom: 1rem; }
 .crunch-progress-segment { background: var(--border); height: 0.25rem; transition: background 0.2s ease; width: 100%; }
 .crunch-progress-segment.is-complete { background: var(--crunch-tone); }
@@ -227,6 +253,80 @@
 
 .crunch-stepper__controls { align-items: center; display: flex; justify-content: space-between; margin-top: 1rem; }
 .crunch-stepper__controls > span { color: var(--fg-muted); font-family: var(--font-mono); font-size: 0.7rem; }
+
+/* System map: the exploded view — small focus block inside a big system. */
+.crunch-system__grid {
+  display: grid;
+  gap: 0.4rem;
+  grid-auto-flow: dense;
+  grid-auto-rows: minmax(3rem, auto);
+  grid-template-columns: repeat(12, 1fr);
+  margin-bottom: 1rem;
+}
+
+.crunch-system__block {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--fg-muted) 9%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--fg);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+}
+
+.crunch-system__block:hover { border-color: var(--fg-muted); }
+
+.crunch-system__block[aria-pressed="true"] {
+  border-color: var(--crunch-tone);
+  box-shadow: inset 0 0 0 1px var(--crunch-tone);
+}
+
+.crunch-system__block.is-focus {
+  background: color-mix(in srgb, var(--crunch-tone) 18%, var(--surface));
+  border-color: var(--crunch-tone);
+}
+
+.crunch-system__block:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--crunch-tone) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.crunch-system__detail {
+  background: color-mix(in srgb, var(--surface) 96%, var(--crunch-tone));
+  border-left: 2px solid var(--crunch-tone);
+  min-height: 6.5rem;
+  padding: 0.9rem 1rem;
+}
+
+.crunch-system__kicker {
+  color: var(--crunch-tone);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.post-content .crunch-system__detail h4 {
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  margin: 0.4rem 0;
+}
+
+.crunch-system__detail p {
+  color: var(--fg-muted);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0;
+}
 
 .crunch-interactive figcaption,
 .crunch-noscript {
@@ -547,6 +647,8 @@
 
 @media (max-width: 680px) {
   .crunch-interactive { border-radius: 2px; }
+  .crunch-system__grid { grid-auto-rows: minmax(2.5rem, auto); }
+  .crunch-system__block { font-size: 0.6rem; padding: 0.3rem 0.35rem; }
   .crunch-chart__stage, .crunch-function__stage { min-height: 17rem; }
   .crunch-chart canvas, .crunch-function canvas { height: 17rem; }
   .crunch-stepper__grid { grid-template-columns: 1fr; }

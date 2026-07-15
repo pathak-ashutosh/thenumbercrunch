@@ -5,9 +5,34 @@ draft: false
 author: "ashutosh"
 categories: ["Python", "Tech"]
 tags: ["environment", "help", "install", "macbook", "macos", "python", "set up"]
+interactive: true
 ---
 
-Since macOS Ventura doesn't come with the pre-installed python, many people face difficulty understanding why they can't use python out of the box on their MacBook. I also met a similar issue which led me down this rabbit hole where I learned how to install python on my MacBook with macOS Ventura 13.0.1 and above, and set up a virtual environment for my first python project. I will help you do both today as quickly as possible.w
+Since macOS Ventura doesn't come with the pre-installed python, many people face difficulty understanding why they can't use python out of the box on their MacBook. I also met a similar issue which led me down this rabbit hole where I learned how to install python on my MacBook with macOS Ventura 13.0.1 and above, and set up a virtual environment for my first python project. I will help you do both today as quickly as possible.
+
+The whole install boils down to a three-step loop. Here it is before we dig into the details:
+
+{{< stepper
+  title="Check, install, verify"
+  description="The short loop that tells you whether Python is ready to go."
+  tone="teal"
+  caption="macOS Ventura ships without Python 3, so the first check usually fails. After installing from python.org, the very same command should return a version number."
+>}}
+{
+  "mode": "code",
+  "language": "Terminal",
+  "code": [
+    "python3 --version",
+    "# install from python.org if 'command not found'",
+    "python3 --version"
+  ],
+  "steps": [
+    {"line": 1, "title": "Check what you have", "explanation": "Ask the system whether Python 3 already exists. Some apps install it as a dependency, so it's worth checking before you download anything.", "state": {"output": "command not found: python3", "meaning": "not installed yet"}},
+    {"line": 2, "title": "Install it", "explanation": "Download the latest Python 3 installer from python.org and run it with the default options, then close and reopen the terminal.", "state": {"source": "python.org", "options": "defaults"}},
+    {"line": 3, "title": "Verify", "explanation": "Run the same check again. A version number means the install worked and Python is on your PATH.", "state": {"output": "Python 3.11.1", "meaning": "ready to use"}}
+  ]
+}
+{{< /stepper >}}
 
 ## Step 1: Install Python
 

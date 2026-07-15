@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Blockchain", "SNARKs", "Tech", "zk Proofs"]
 tags: ["blockchain", "MPC", "multi-party computation", "privacy", "SNARK", "transparency", "trusted setup", "zero-knowledge proofs"]
+interactive: true
 ---
 
 ## Introduction
@@ -38,6 +39,30 @@ The Setup phase involves _generating the initial parameters required for zk-SNAR
 Cryptographic primitives such as [elliptic curve cryptography](<https://en.wikipedia.org/wiki/Elliptic-curve_cryptography>) and [hashing functions](<https://www.movable-type.co.uk/scripts/sha256.html>) are employed in zk-SNARKs to achieve their privacy-preserving properties. These primitives enable the construction of zero-knowledge proofs, which allow the Prover to demonstrate knowledge of a secret input without revealing any details about the input itself. The succinctness of zk-SNARKs refers to their ability to generate compact proofs, allowing for efficient verification and reducing the computational and storage requirements.
 
 By utilizing these cryptographic techniques, zk-SNARKs provide a powerful tool for achieving privacy in blockchain transactions while maintaining the desired level of transparency. Their implementation in various blockchain platforms and applications has showcased their potential to revolutionize the way privacy is handled in decentralized systems.
+
+The three roles are easier to keep straight when you follow one proof from start to finish—and notice what never gets shared:
+
+{{< stepper
+  title="Prove you know a secret without revealing it"
+  description="Follow a statement from setup to verification, tracking what stays hidden the whole way."
+  tone="violet"
+  caption="A zk-SNARK lets a prover convince a verifier that a statement is true while revealing nothing beyond 'it's true.' The secret—the witness—never leaves the prover."
+>}}
+{
+  "mode": "code",
+  "language": "zk-SNARK protocol",
+  "code": [
+    "setup() -> proving key, verifying key",
+    "prove(statement, secret, pk) -> proof",
+    "verify(public statement, proof, vk) -> true / false"
+  ],
+  "steps": [
+    {"line": 1, "title": "Trusted setup", "explanation": "Participants jointly generate the public parameters—a proving key and a verifying key. The leftover randomness ('toxic waste') must be destroyed; multi-party computation spreads that trust across many parties so no one holds it alone.", "state": {"public output": "proving key, verifying key", "must be destroyed": "setup randomness"}},
+    {"line": 2, "title": "Prover builds a proof", "explanation": "The prover holds a secret—the 'witness', say a balance large enough for a transaction—and produces a short proof that the statement holds.", "state": {"prover holds": "secret witness", "produces": "succinct proof", "reveals witness?": "no"}},
+    {"line": 3, "title": "Verifier checks it", "explanation": "The verifier needs only the public statement, the proof, and the verifying key. It returns true or false almost instantly—without ever seeing the secret.", "state": {"verifier sees": "statement + proof", "verifier learns": "only true / false", "cost": "tiny, constant"}}
+  ]
+}
+{{< /stepper >}}
 
 ## Advantages and Limitations of zk-SNARK
 

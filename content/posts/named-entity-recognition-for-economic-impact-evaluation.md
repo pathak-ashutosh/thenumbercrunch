@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Deep Learning", "Generative AI", "NLP", "Tech"]
 tags: ["artificial intelligence", "machine learning", "nlp", "python"]
+interactive: true
 ---
 
 The original article on named entity recognition was first published on [Substack](<https://ashutoshpathak.substack.com/p/using-ner-for-economic-impact-evaluation>). This is a somewhat modified version of the same article.
@@ -24,6 +25,29 @@ Let's start with learning about the two main topics of this article: named entit
 > Lasri et al, [EconBERTa: Towards Robust Extraction of Named Entities in Economics](<https://aclanthology.org/2023.findings-emnlp.774/>)
 
 For example, a sentence like "The minimum wage increase in Mexico reduced poverty rates by 5%" would have entities such as the intervention (minimum wage increase), population (Mexico), outcome (poverty rates), and effect size (5%) labeled accordingly.
+
+Walk that exact sentence through the tagger to see how a flat string becomes a structured causal claim:
+
+{{< stepper
+  title="Pull a causal claim out of one sentence"
+  description="Tag each token with the entity type it belongs to—intervention, population, outcome, or effect size."
+  tone="teal"
+  caption="Labels follow the BIO scheme: B- marks the first token of an entity, I- the tokens that continue it, O everything else. The CRF layer discussed later keeps the sequence coherent—no I- tag without a matching B-."
+>}}
+{
+  "mode": "code",
+  "language": "tokens",
+  "code": ["The", "minimum", "wage", "increase", "in", "Mexico", "reduced", "poverty", "rates", "by", "5%"],
+  "steps": [
+    {"line": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "title": "Four entity types to find", "explanation": "The goal isn't sentiment or topic—it's the causal skeleton of an impact-evaluation study: what was done, to whom, changing what, by how much.", "state": {"targets": "intervention, population, outcome, effect_size"}},
+    {"line": [2, 3, 4], "title": "Intervention", "explanation": "The policy under study. Three tokens, so the tags run B-intervention, I-intervention, I-intervention.", "state": {"minimum wage increase": "B/I-intervention"}},
+    {"line": [6], "title": "Population", "explanation": "Who the policy applies to.", "state": {"Mexico": "B-population"}},
+    {"line": [8, 9], "title": "Outcome", "explanation": "The quantity the intervention is claimed to move.", "state": {"poverty rates": "B/I-outcome"}},
+    {"line": [11], "title": "Effect size", "explanation": "The magnitude of the change—the number a policymaker actually acts on.", "state": {"5%": "B-effect_size"}},
+    {"line": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "title": "A structured fact", "explanation": "The unstructured sentence is now a machine-readable claim, ready to join thousands of others in a knowledge base.", "state": {"intervention": "minimum wage increase", "population": "Mexico", "outcome": "poverty rates", "effect": "5%"}}
+  ]
+}
+{{< /stepper >}}
 
 ## The Problem(s)
 

@@ -19,8 +19,8 @@ The chart supports line, bar, and scatter views. Readers can isolate a series an
 
 {{< chart
   title="Why learning rate changes the journey"
-  description="Toggle a run, then hover over any point to compare training loss."
-  caption="Illustrative values, created for this component demo."
+  description="Toggle a run, then hover over any point to compare training loss. The dashed line is the shipping threshold."
+  caption="Illustrative values, created for this component demo. refLines draw dashed annotation lines that stay out of the legend."
   tone="blue"
 >}}
 {
@@ -33,6 +33,9 @@ The chart supports line, bar, and scatter views. Readers can isolate a series an
     {"name": "Learning rate 0.01", "color": "blue", "values": [1.0, 0.68, 0.47, 0.34, 0.27, 0.23]},
     {"name": "Learning rate 0.10", "color": "orange", "values": [1.0, 0.42, 0.25, 0.19, 0.17, 0.16]},
     {"name": "Learning rate 0.80", "color": "teal", "values": [1.0, 0.73, 0.91, 0.62, 0.88, 0.70]}
+  ],
+  "refLines": [
+    {"value": 0.2, "label": "ship below this loss", "color": "violet"}
   ]
 }
 {{< /chart >}}
@@ -56,6 +59,28 @@ The function lab accepts a safe expression and any number of sliders. This examp
     {"name": "a", "label": "Curvature · a", "min": -2, "max": 2, "step": 0.1, "value": 1, "decimals": 1},
     {"name": "b", "label": "Tilt · b", "min": -5, "max": 5, "step": 0.1, "value": 0, "decimals": 1},
     {"name": "c", "label": "Height · c", "min": -8, "max": 8, "step": 0.1, "value": 0, "decimals": 1}
+  ]
+}
+{{< /function-lab >}}
+
+Add `points` to turn the lab into a fit-by-hand exercise with a live loss readout.
+
+{{< function-lab
+  title="Fit the line to the data"
+  description="Move both knobs until the loss readout bottoms out. That search is what training automates."
+  caption="Dots are fixed training examples; the readout is the mean squared error between the line and the dots."
+  tone="teal"
+>}}
+{
+  "formula": "y = m·x + c",
+  "expression": "m*x + c",
+  "xDomain": [-5, 5],
+  "yDomain": [-10, 10],
+  "lossLabel": "Loss · mean squared error",
+  "points": [[-4, -5.2], [-2, -2.6], [0, -0.4], [2, 2.1], [4, 4.4]],
+  "parameters": [
+    {"name": "m", "label": "Slope · m", "min": -3, "max": 3, "step": 0.1, "value": 0.2, "decimals": 1},
+    {"name": "c", "label": "Intercept · c", "min": -5, "max": 5, "step": 0.1, "value": 2, "decimals": 1}
   ]
 }
 {{< /function-lab >}}

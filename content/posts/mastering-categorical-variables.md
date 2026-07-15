@@ -5,6 +5,7 @@ draft: false
 author: "ashutosh"
 categories: ["Artificial Intelligence", "Machine Learning", "Python", "Tech"]
 tags: ["artificial intelligence", "machine learning", "pandas", "python", "sklearn"]
+interactive: true
 ---
 
 Processing categorical variables in machine learning can be a complex and daunting task, but it is essential to unlock the full potential of your data. This article covers best practices for working with categorical variables, from encoding and transforming data to optimizing performance and achieving success. There are three main ways to handle categorical variables: 
@@ -51,19 +52,46 @@ Here is an example of one-hot encoding using python's `pandas` and `sklearn` lib
 
 This would output the following dataframe:
 
-| Fruit| Fruit_Apple| Fruit_Banana| Fruit_Orange  
----|---|---|---|---  
-0| Apple| 1| 0| 0  
-1| Banana| 0| 1| 0  
-2| Orange| 0| 0| 1  
-3| Apple| 1| 0| 0  
-4| Banana| 0| 1| 0  
-5| Orange| 0| 0| 1  
-Pandas dataframe with one-hot encoded Fruit variable
+|   | Fruit  | Fruit_Apple | Fruit_Banana | Fruit_Orange |
+|---|--------|-------------|--------------|--------------|
+| 0 | Apple  | 1           | 0            | 0            |
+| 1 | Banana | 0           | 1            | 0            |
+| 2 | Orange | 0           | 0            | 1            |
+| 3 | Apple  | 1           | 0            | 0            |
+| 4 | Banana | 0           | 1            | 0            |
+| 5 | Orange | 0           | 0            | 1            |
+
+*Pandas dataframe with one-hot encoded Fruit variable*
 
 As you can see, the original "Fruit" column has been replaced with three binary columns "Fruit_Apple", "Fruit_Banana", and "Fruit_Orange", each row has one of the columns with value 1 and the rest with 0.
 
 It's important to notice that one-hot encoding increases the dimensionality of the data and can lead to the curse of dimensionality, it's also not recommended when the number of categories is high, as it can lead to a high number of new binary columns.
+
+Step through the transformation to see exactly where that extra width comes from:
+
+{{< stepper
+  title="Watch one-hot encoding expand a column"
+  description="Follow the 'Fruit' column as it turns into three binary columns—one per category."
+  tone="violet"
+  caption="One categorical column becomes k numeric columns. Readable for any model, but the width grows with the number of categories—which is the whole argument for the other methods below."
+>}}
+{
+  "mode": "code",
+  "language": "Python",
+  "code": [
+    "df = pd.DataFrame({'Fruit': ['Apple', 'Banana', 'Orange']})",
+    "enc = OneHotEncoder()",
+    "one_hot = enc.fit_transform(df[['Fruit']]).toarray()",
+    "df = pd.concat([df, one_hot_df], axis=1)"
+  ],
+  "steps": [
+    {"line": 1, "title": "Start with one text column", "explanation": "A model can't multiply the word 'Apple' by a weight. The category has to become numbers first.", "state": {"Fruit": "Apple, Banana, Orange", "columns": 1}},
+    {"line": 2, "title": "Find the distinct categories", "explanation": "The encoder scans the column and records every unique value it will need a column for.", "state": {"categories found": "Apple, Banana, Orange", "new columns": 3}},
+    {"line": 3, "title": "Set one bit per row", "explanation": "Each row gets a 1 in the column matching its category and 0 everywhere else—hence 'one-hot'.", "state": {"Apple row": "[1, 0, 0]", "Banana row": "[0, 1, 0]", "Orange row": "[0, 0, 1]"}},
+    {"line": 4, "title": "Join it back", "explanation": "The binary columns replace the original. Note the width: k categories add k columns, which is why one-hot struggles with high-cardinality features.", "state": {"columns": "Fruit_Apple, Fruit_Banana, Fruit_Orange", "width": "1 -> 3"}}
+  ]
+}
+{{< /stepper >}}
 
 ## Ordinal Encoding
 
@@ -93,14 +121,15 @@ Here is an example of ordinal encoding using python's pandas and sklearn librari
 
 This would output the following dataframe:
 
-| Neighborhood| Neighborhood_Encoded  
----|---|---  
-0| Poor| 0.0  
-1| Upper class| 3.0  
-2| Middle class| 2.0  
-3| Lower income| 1.0  
-4| Luxury| 4.0  
-Pandas dataframe with ordinally encoded Neighborhood variable
+|   | Neighborhood | Neighborhood_Encoded |
+|---|--------------|----------------------|
+| 0 | Poor         | 0.0                  |
+| 1 | Upper class  | 3.0                  |
+| 2 | Middle class | 2.0                  |
+| 3 | Lower income | 1.0                  |
+| 4 | Luxury       | 4.0                  |
+
+*Pandas dataframe with ordinally encoded Neighborhood variable*
 
 As you can see, the original "Neighborhood" column has been replaced with a new column "Neighborhood_Encoded" that contains the ordinal encoded values.
 

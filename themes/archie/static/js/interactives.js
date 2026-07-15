@@ -106,6 +106,9 @@
     const tooltip = select(root, "[data-chart-tooltip]");
     const summary = select(root, "[data-chart-summary]");
     const active = config.series.map(() => true);
+    const refLines = (config.refLines || [])
+      .map((line) => ({ ...line, value: Number(line.value) }))
+      .filter((line) => Number.isFinite(line.value));
     let hitTargets = [];
 
     config.series.forEach((series, index) => {
@@ -150,7 +153,7 @@
       const xDomain = config.type === "scatter"
         ? paddedExtent(xValues, config.xDomain)
         : [0, Math.max(1, ...(visible.map((item) => item.points.length - 1)))];
-      const yDomain = paddedExtent(yValues, config.yDomain);
+      const yDomain = paddedExtent(yValues.concat(refLines.map((line) => line.value)), config.yDomain);
       const xScale = (value) => padding.left + ((value - xDomain[0]) / (xDomain[1] - xDomain[0] || 1)) * plotWidth;
       const yScale = (value) => padding.top + plotHeight - ((value - yDomain[0]) / (yDomain[1] - yDomain[0] || 1)) * plotHeight;
       hitTargets = [];
@@ -173,15 +176,27 @@
       }
 
       const labels = config.labels || [];
-      const xTicks = Math.min(width < 460 ? 4 : 6, Math.max(2, labels.length || 6));
-      for (let tick = 0; tick < xTicks; tick += 1) {
-        const ratio = xTicks === 1 ? 0 : tick / (xTicks - 1);
-        const value = xDomain[0] + (xDomain[1] - xDomain[0]) * ratio;
-        const x = xScale(value);
-        const labelIndex = Math.round(value);
-        const label = config.type === "scatter" ? formatNumber(value, { decimals: 1 }) : (labels[labelIndex] ?? labelIndex);
-        context.textAlign = tick === 0 ? "left" : tick === xTicks - 1 ? "right" : "center";
-        context.fillText(String(label), x, height - padding.bottom + 18);
+      const chartType = config.type || "line";
+      const groupCount = Math.max(1, ...visible.map((item) => item.points.length));
+      const groupWidth = plotWidth / groupCount;
+      if (chartType === "bar") {
+        // Bars sit in group slots, so labels must center under each group.
+        const step = Math.ceil(groupCount / (width < 460 ? 4 : 8));
+        context.textAlign = "center";
+        for (let group = 0; group < groupCount; group += step) {
+          context.fillText(String(labels[group] ?? group + 1), padding.left + (group + 0.5) * groupWidth, height - padding.bottom + 18);
+        }
+      } else {
+        const xTicks = Math.min(width < 460 ? 4 : 6, Math.max(2, labels.length || 6));
+        for (let tick = 0; tick < xTicks; tick += 1) {
+          const ratio = xTicks === 1 ? 0 : tick / (xTicks - 1);
+          const value = xDomain[0] + (xDomain[1] - xDomain[0]) * ratio;
+          const x = xScale(value);
+          const labelIndex = Math.round(value);
+          const label = config.type === "scatter" ? formatNumber(value, { decimals: 1 }) : (labels[labelIndex] ?? labelIndex);
+          context.textAlign = tick === 0 ? "left" : tick === xTicks - 1 ? "right" : "center";
+          context.fillText(String(label), x, height - padding.bottom + 18);
+        }
       }
 
       if (config.xLabel) {
@@ -197,10 +212,7 @@
         context.restore();
       }
 
-      const chartType = config.type || "line";
       if (chartType === "bar") {
-        const groupCount = Math.max(1, ...visible.map((item) => item.points.length));
-        const groupWidth = plotWidth / groupCount;
         const barWidth = Math.max(3, Math.min(38, (groupWidth * 0.72) / visible.length));
         const zeroY = yScale(Math.max(yDomain[0], Math.min(0, yDomain[1])));
         visible.forEach((item, visibleIndex) => {
@@ -242,9 +254,31 @@
         });
       }
 
+      refLines.forEach((line, index) => {
+        const y = yScale(line.value);
+        const color = line.color ? seriesColor(root, line.color, index) : colors.muted;
+        context.save();
+        context.strokeStyle = color;
+        context.lineWidth = 1.5;
+        context.setLineDash([6, 4]);
+        context.beginPath();
+        context.moveTo(padding.left, y);
+        context.lineTo(width - padding.right, y);
+        context.stroke();
+        context.restore();
+        if (line.label) {
+          context.fillStyle = color;
+          context.textAlign = "right";
+          context.fillText(line.label, width - padding.right, y - 9);
+        }
+      });
+
       const min = Math.min(...yValues);
       const max = Math.max(...yValues);
-      summary.textContent = `${visible.length} visible series. Values range from ${formatNumber(min, config)} to ${formatNumber(max, config)}.`;
+      const refText = refLines.length
+        ? ` ${refLines.map((line) => `${line.label || "Reference line"} at ${formatNumber(line.value, config)}`).join(". ")}.`
+        : "";
+      summary.textContent = `${visible.length} visible series. Values range from ${formatNumber(min, config)} to ${formatNumber(max, config)}.${refText}`;
     }
 
     canvas.addEventListener("pointermove", (event) => {
@@ -401,6 +435,21 @@
     }
 
     formula.textContent = config.formula || `y = ${config.expression}`;
+
+    const points = (config.points || [])
+      .map((point) => ({ x: Number(point[0]), y: Number(point[1]) }))
+      .filter((point) => Number.isFinite(point.x) && Number.isFinite(point.y));
+    let lossValue = null;
+    if (points.length) {
+      const lossReadout = document.createElement("div");
+      lossReadout.className = "crunch-function__loss";
+      const lossLabel = document.createElement("span");
+      lossLabel.textContent = config.lossLabel || "Mean squared error against the data";
+      lossValue = document.createElement("strong");
+      lossReadout.append(lossLabel, lossValue);
+      controls.after(lossReadout);
+    }
+
     (config.parameters || []).forEach((parameter, index) => {
       const name = parameter.name || parameter.key;
       scope[name] = Number(parameter.value ?? parameter.min ?? 0);
@@ -445,7 +494,7 @@
         if (Number.isFinite(y)) samples.push({ x, y });
       }
       if (!samples.length) return;
-      const yDomain = paddedExtent(samples.map((point) => point.y), config.yDomain);
+      const yDomain = paddedExtent(samples.map((point) => point.y).concat(points.map((point) => point.y)), config.yDomain);
       const padding = { top: 16, right: 18, bottom: 42, left: width < 460 ? 42 : 54 };
       const plotWidth = width - padding.left - padding.right;
       const plotHeight = height - padding.top - padding.bottom;
@@ -488,8 +537,29 @@
       });
       context.stroke();
 
+      let lossText = "";
+      if (points.length) {
+        context.fillStyle = colors.palette[2];
+        points.forEach((point) => {
+          if (point.x < xDomain[0] || point.x > xDomain[1]) return;
+          context.beginPath();
+          context.arc(xScale(point.x), yScale(point.y), 4.5, 0, Math.PI * 2);
+          context.fill();
+        });
+        const errors = points
+          .map((point) => {
+            let predicted = NaN;
+            try { predicted = evaluate({ ...scope, x: point.x }); } catch (_) { predicted = NaN; }
+            return Number.isFinite(predicted) ? (predicted - point.y) ** 2 : null;
+          })
+          .filter((error) => error != null);
+        const mse = errors.length ? errors.reduce((sum, error) => sum + error, 0) / errors.length : NaN;
+        lossValue.textContent = formatNumber(mse, { decimals: config.lossDecimals ?? 2 });
+        lossText = ` The mean squared error against ${points.length} data points is ${formatNumber(mse, { decimals: 2 })}.`;
+      }
+
       const parameters = Object.entries(scope).map(([name, value]) => `${name} is ${formatNumber(value, { decimals: 2 })}`).join(", ");
-      summary.textContent = `${formula.textContent}. ${parameters}. The visible y range is ${formatNumber(yDomain[0], { decimals: 2 })} to ${formatNumber(yDomain[1], { decimals: 2 })}.`;
+      summary.textContent = `${formula.textContent}. ${parameters}. The visible y range is ${formatNumber(yDomain[0], { decimals: 2 })} to ${formatNumber(yDomain[1], { decimals: 2 })}.${lossText}`;
     }
 
     new ResizeObserver(draw).observe(canvas);
@@ -971,12 +1041,33 @@
     render();
   }
 
+  function initSystemMap(root) {
+    const blocks = Array.from(root.querySelectorAll("[data-system-block]"));
+    const detail = select(root, "[data-system-detail]");
+    if (!blocks.length || !detail) return;
+
+    function show(block) {
+      blocks.forEach((item) => item.setAttribute("aria-pressed", String(item === block)));
+      detail.replaceChildren();
+      appendTextElement(detail, "span", "crunch-system__kicker", block.dataset.share || "Component");
+      appendTextElement(detail, "h4", "", block.dataset.name);
+      appendTextElement(detail, "p", "", block.dataset.note);
+    }
+
+    blocks.forEach((block) => {
+      block.removeAttribute("title");
+      block.addEventListener("click", () => show(block));
+    });
+    show(blocks.find((block) => block.hasAttribute("data-system-initial")) || blocks[0]);
+  }
+
   function initialize() {
     document.querySelectorAll("[data-crunch-chart]").forEach(initChart);
     document.querySelectorAll("[data-crunch-function]").forEach(initFunction);
     document.querySelectorAll("[data-crunch-stepper]").forEach(initStepper);
     document.querySelectorAll("[data-caucus-atlas]").forEach(initCaucusAtlas);
     document.querySelectorAll("[data-model-race]").forEach(initModelRace);
+    document.querySelectorAll("[data-crunch-system]").forEach(initSystemMap);
   }
 
   if (document.readyState === "loading") {
