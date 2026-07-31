@@ -1,0 +1,5 @@
+# https://www.rfc-editor.org/rfc/rfc9116
+Contact: https://thenumbercrunch.com/pages/contact/
+Expires: 2027-07-22T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://thenumbercrunch.com/.well-known/security.txt
