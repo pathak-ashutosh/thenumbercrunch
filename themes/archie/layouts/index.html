@@ -2,23 +2,9 @@
 <div class="home">
   <section class="home-intro">
     <div class="home-thesis">
-      <p class="home-kicker">Ashutosh Pathak &mdash; AI engineer</p>
-      <h1>I take systems apart to see what makes them useful.</h1>
+      <h1>AI systems, taken apart.</h1>
       <p class="site-description">Production AI, machine learning, data systems, and the awkward parts between a good demo and software people can trust.</p>
-      <p class="home-links"><a href="{{ "/posts/" | absURL }}">Browse the notes</a> <span>or</span> <a href="https://github.com/pathak-ashutosh" rel="me">see what I&rsquo;m building</a>.</p>
     </div>
-
-    <aside class="bench-note" aria-labelledby="review-loop-title">
-      <p class="bench-note__eyebrow">How I test an AI idea</p>
-      <h2 id="review-loop-title">Four questions before I trust it</h2>
-      <ol class="bench-note__checks">
-        <li><strong>Problem</strong><span>What changes for the user?</span></li>
-        <li><strong>Evidence</strong><span>What beats the baseline?</span></li>
-        <li><strong>System</strong><span>What breaks outside the demo?</span></li>
-        <li><strong>Use</strong><span>Would anyone choose it twice?</span></li>
-      </ol>
-      <p class="bench-note__origin">I learned by opening computers and occasionally ruining the parts. The habit survived; the checklist got better.</p>
-    </aside>
   </section>
 
   {{ $posts := where (where .Site.RegularPages "Section" "posts") "Params.hidden" "ne" true }}
@@ -40,6 +26,18 @@
       {{ end }}
     </div>
   </section>
+
+  <aside class="bench-note" aria-labelledby="review-loop-title">
+    <p class="bench-note__eyebrow">How I test an AI idea</p>
+    <h2 id="review-loop-title">Four questions before I trust it</h2>
+    <ol class="bench-note__checks">
+      <li><strong>Problem</strong><span>What changes for the user?</span></li>
+      <li><strong>Evidence</strong><span>What beats the baseline?</span></li>
+      <li><strong>System</strong><span>What breaks outside the demo?</span></li>
+      <li><strong>Use</strong><span>Would anyone choose it twice?</span></li>
+    </ol>
+    <p class="bench-note__origin">I learned by opening computers and occasionally ruining the parts. The habit survived; the checklist got better.</p>
+  </aside>
 
   <section class="working-premise">
     <p>Working premise</p>
