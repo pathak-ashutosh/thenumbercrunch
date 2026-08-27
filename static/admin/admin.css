@@ -321,6 +321,11 @@ body {
   border-bottom: 0 !important;
 }
 
+/* Hugo's section metadata file is not an editable article. */
+[class*="-ListCard"]:has(a[href$="/entries/_index"]) {
+  display: none !important;
+}
+
 [class*="-ListCard"]::before {
   background: var(--nc-coral) !important;
   bottom: 0 !important;
