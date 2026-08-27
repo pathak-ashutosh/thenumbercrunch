@@ -1,7 +1,10 @@
 <footer>
   <p>
     &copy; {{ now.Year }} {{ .Site.Params.author | default .Site.Title }}
-    <a class="footer-rss" href="{{ "/index.xml" | absURL }}">RSS feed</a>
+    <span class="footer-links">
+      <a href="{{ "/admin/" | absURL }}" rel="nofollow">Write</a>
+      <a href="{{ "/index.xml" | absURL }}">RSS feed</a>
+    </span>
   </p>
 </footer>
 

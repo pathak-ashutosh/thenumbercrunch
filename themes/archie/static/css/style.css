@@ -577,8 +577,9 @@ body > footer {
   color: var(--fg-muted);
 }
 
-.footer-rss { color: var(--fg-muted); float: right; text-underline-offset: 0.2rem; }
-.footer-rss:hover { color: var(--accent-alt); }
+.footer-links { display: flex; float: right; gap: 1rem; }
+.footer-links a { color: var(--fg-muted); text-underline-offset: 0.2rem; }
+.footer-links a:hover { color: var(--accent-alt); }
 
 ::selection { background: color-mix(in srgb, var(--accent) 24%, transparent); }
 
@@ -615,7 +616,7 @@ button:focus-visible {
   .post-title { font-size: clamp(2.25rem, 12vw, 3rem); }
   .post-content { font-size: 1.04rem; line-height: 1.78; }
   .post-nav a { max-width: 100%; }
-  .footer-rss { display: block; float: none; margin-top: 0.35rem; width: fit-content; }
+  .footer-links { float: none; margin-top: 0.35rem; width: fit-content; }
 }
 
 @media (prefers-reduced-motion: reduce) {
