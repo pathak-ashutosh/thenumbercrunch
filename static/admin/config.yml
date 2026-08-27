@@ -1,0 +1,86 @@
+backend:
+  name: github
+  repo: pathak-ashutosh/thenumbercrunch
+  branch: main
+  base_url: https://auth.thenumbercrunch.com
+  auth_endpoint: /auth
+  site_domain: thenumbercrunch.com
+  preview_context: The Number Crunch / preview
+  use_graphql: true
+  commit_messages:
+    create: Create {{collection}} {{slug}}
+    update: Update {{collection}} {{slug}}
+    delete: Delete {{collection}} {{slug}}
+    uploadMedia: Upload {{path}}
+    deleteMedia: Delete {{path}}
+    openAuthoring: Update {{collection}} {{slug}}
+
+publish_mode: editorial_workflow
+site_url: https://thenumbercrunch.com
+display_url: https://thenumbercrunch.com
+logo:
+  src: /admin/logo.svg
+  show_in_header: true
+local_backend: true
+search: true
+
+media_folder: static/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    folder: content/posts
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "posts/{{slug}}/"
+    identifier_field: title
+    summary: "{{title}} — {{date}}"
+    sortable_fields: [date, title, draft]
+    view_filters:
+      - { label: Drafts, field: draft, pattern: "true" }
+      - { label: Interactive, field: interactive, pattern: "true" }
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Publish date
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DDTHH:mm:ssZ"
+        date_format: "YYYY-MM-DD"
+        time_format: "HH:mm"
+      - label: Keep hidden after merge
+        name: draft
+        widget: boolean
+        default: false
+        hint: Editorial workflow already keeps unpublished work on a branch. Enable only to merge a post without showing it publicly.
+      - { label: Author, name: author, widget: string, required: false }
+      - { label: Description, name: description, widget: text, required: false }
+      - label: Categories
+        name: categories
+        widget: list
+        required: false
+        field: { label: Category, name: category, widget: string }
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+        field: { label: Tag, name: tag, widget: string }
+      - label: Interactive essay
+        name: interactive
+        widget: boolean
+        default: false
+        required: false
+        hint: Enable when the post contains a Crunchpad block.
+      - label: Render math
+        name: math
+        widget: boolean
+        default: false
+        required: false
+        hint: Enable when the post uses KaTeX notation.
+      - label: Body
+        name: body
+        widget: markdown
+        modes: [rich_text, raw]

@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /admin/
+Disallow: /previews/
 Disallow: /wp-admin/
 Disallow: /wp-content/
 Disallow: /xmlrpc.php

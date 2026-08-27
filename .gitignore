@@ -16,3 +16,6 @@ Thumbs.db
 
 # Browser QA
 .playwright-cli/
+
+# Cloudflare Worker local state
+.wrangler/

@@ -1,0 +1,124 @@
+name: Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+  statuses: write
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      PREVIEW_CONTEXT: The Number Crunch / preview
+      PREVIEW_SHA: ${{ github.event.pull_request.head.sha }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set preview URL
+        run: |
+          set -euo pipefail
+          revision="${PREVIEW_SHA:0:12}"
+          url="https://thenumbercrunch.com/previews/pr-${PR_NUMBER}/${revision}/"
+          echo "PREVIEW_REVISION=$revision" >> "$GITHUB_ENV"
+          echo "PREVIEW_URL=$url" >> "$GITHUB_ENV"
+      - name: Mark preview pending
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${PREVIEW_SHA}" \
+            -f state=pending \
+            -f context="$PREVIEW_CONTEXT" \
+            -f description="Building Hugo preview"
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78 # v3.2.1
+        with:
+          hugo-version: '0.164.0'
+          extended: false
+      - name: Validate editor blocks
+        run: node scripts/test_admin_editor.mjs
+      - name: Test OAuth worker
+        run: node --test oauth-worker/test/*.test.js
+      - name: Build preview
+        run: hugo --minify --gc --buildDrafts --buildFuture --baseURL "$PREVIEW_URL"
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "${VPS_KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+          fi
+          chmod 644 ~/.ssh/known_hosts
+      - name: Deploy preview
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          set -euo pipefail
+          destination="/var/www/thenumbercrunch.com/html/previews/pr-${PR_NUMBER}/${PREVIEW_REVISION}/"
+          ssh "deploy@$VPS_HOST" "mkdir -p '$destination'"
+          rsync -av --delete public/ "deploy@$VPS_HOST:$destination"
+      - name: Publish preview URL
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${PREVIEW_SHA}" \
+            -f state=success \
+            -f context="$PREVIEW_CONTEXT" \
+            -f description="Hugo preview ready" \
+            -f target_url="$PREVIEW_URL"
+      - name: Mark preview failed
+        if: failure()
+        run: |
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${PREVIEW_SHA}" \
+            -f state=failure \
+            -f context="$PREVIEW_CONTEXT" \
+            -f description="Hugo preview failed"
+
+  clean-preview:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+    steps:
+      - name: Validate preview identifier
+        run: |
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_KNOWN_HOSTS: ${{ secrets.VPS_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "${VPS_KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$VPS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
+          fi
+          chmod 644 ~/.ssh/known_hosts
+      - name: Remove preview
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+        run: |
+          set -euo pipefail
+          preview="/var/www/thenumbercrunch.com/html/previews/pr-${PR_NUMBER}"
+          ssh "deploy@$VPS_HOST" "if [ -d '$preview' ]; then find '$preview' -depth -delete; fi"

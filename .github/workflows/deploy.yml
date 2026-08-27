@@ -50,7 +50,8 @@ jobs:
             ssh-keyscan -H "$VPS_HOST" >> ~/.ssh/known_hosts
           fi
           chmod 644 ~/.ssh/known_hosts
-          rsync -av --delete public/ "deploy@$VPS_HOST:/var/www/thenumbercrunch.com/html/"
+          # PR previews live beside production and have their own lifecycle.
+          rsync -av --delete --exclude 'previews/' public/ "deploy@$VPS_HOST:/var/www/thenumbercrunch.com/html/"
       - name: Purge Cloudflare Cache
         env:
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}

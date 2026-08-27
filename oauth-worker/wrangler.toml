@@ -1,0 +1,15 @@
+name = "thenumbercrunch-decap-oauth"
+main = "src/index.js"
+compatibility_date = "2026-08-26"
+workers_dev = false
+preview_urls = false
+
+routes = [
+  { pattern = "auth.thenumbercrunch.com", zone_name = "thenumbercrunch.com", custom_domain = true }
+]
+
+[vars]
+CMS_ORIGIN = "https://thenumbercrunch.com"
+GITHUB_ALLOWED_LOGIN = "pathak-ashutosh"
+GITHUB_REPOSITORY = "pathak-ashutosh/thenumbercrunch"
+GITHUB_REPO_PRIVATE = "false"

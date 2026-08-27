@@ -1,0 +1,12 @@
+{
+  "name": "thenumbercrunch-decap-oauth",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "wrangler": "4.126.0"
+  }
+}
