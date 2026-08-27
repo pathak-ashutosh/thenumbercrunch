@@ -1,0 +1,918 @@
+:root {
+  --nc-paper: #f5f7fa;
+  --nc-surface: #ffffff;
+  --nc-ink: #172129;
+  --nc-ink-soft: #26333d;
+  --nc-muted: #65717c;
+  --nc-line: #ccd4dc;
+  --nc-line-soft: #e5eaf0;
+  --nc-coral: #e6553b;
+  --nc-coral-deep: #c63f29;
+  --nc-blue: #255cd6;
+  --nc-blue-deep: #1948b4;
+  --nc-teal: #26776d;
+  --nc-code: #e9eef4;
+  --nc-shadow: 0 14px 38px rgba(23, 33, 41, 0.08);
+  --nc-font-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --nc-font-reading: "Source Serif 4", Charter, Georgia, serif;
+  --nc-font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+html,
+body {
+  background: var(--nc-paper) !important;
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+}
+
+body {
+  min-width: 320px;
+}
+
+::selection {
+  background: rgba(230, 85, 59, 0.2);
+}
+
+#nc-root {
+  min-height: 100vh;
+}
+
+/* Header: one decisive dark band instead of a generic SaaS nav. */
+[class*="-AppHeader-css"] {
+  background: var(--nc-ink) !important;
+  border: 0 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  min-height: 72px !important;
+}
+
+[class*="-AppHeaderContent"] {
+  min-height: 72px !important;
+  padding: 0 clamp(20px, 3vw, 48px) !important;
+}
+
+[class*="-AppHeaderLogo"] {
+  margin-right: clamp(18px, 3vw, 48px) !important;
+}
+
+[class*="-AppHeaderLogo"] img {
+  background: var(--nc-surface) !important;
+  border-radius: 6px !important;
+  height: 42px !important;
+  padding: 5px 7px !important;
+  width: auto !important;
+}
+
+[class*="-AppHeaderNavLink"],
+[class*="-AppHeaderButton"] {
+  color: #aebbc5 !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  min-height: 72px !important;
+  position: relative !important;
+  transition: color 160ms ease, background-color 160ms ease !important;
+}
+
+[class*="-AppHeaderNavLink"]:hover,
+[class*="-AppHeaderButton"]:hover,
+.header-link-active {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+}
+
+.header-link-active::after {
+  background: var(--nc-coral) !important;
+  bottom: 0 !important;
+  content: "" !important;
+  height: 3px !important;
+  left: 18px !important;
+  position: absolute !important;
+  right: 18px !important;
+}
+
+[class*="-AppHeader-css"] svg {
+  color: currentColor !important;
+  fill: currentColor !important;
+}
+
+[class*="AppHeaderActions"] {
+  gap: 16px !important;
+}
+
+[class*="AppHeaderSiteLink"] {
+  color: #aebbc5 !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.02em !important;
+  transition: color 160ms ease !important;
+}
+
+[class*="AppHeaderSiteLink"]:hover {
+  color: #ffffff !important;
+}
+
+[class*="AvatarDropdownButton"] {
+  border: 1px solid rgba(255, 255, 255, 0.26) !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+}
+
+[class*="AppHeaderQuickNewButton"] {
+  background: var(--nc-coral) !important;
+  border: 1px solid var(--nc-coral) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease !important;
+}
+
+[class*="AppHeaderQuickNewButton"]:hover {
+  background: var(--nc-coral-deep) !important;
+  border-color: var(--nc-coral-deep) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Library layout. */
+[class*="-AppMainContainer"] {
+  background: var(--nc-paper) !important;
+  color: var(--nc-ink) !important;
+}
+
+[class*="-CollectionContainer"] {
+  align-items: flex-start !important;
+  display: grid !important;
+  gap: clamp(24px, 3vw, 44px) !important;
+  grid-template-columns: 250px minmax(0, 1fr) !important;
+  margin: 0 auto !important;
+  max-width: 1320px !important;
+  padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 56px) 72px !important;
+}
+
+[class*="-SidebarContainer"] {
+  align-self: flex-start !important;
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 28px rgba(23, 33, 41, 0.06) !important;
+  overflow: hidden !important;
+  position: sticky !important;
+  top: 104px !important;
+  width: 250px !important;
+}
+
+[class*="-SidebarHeading"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.035em !important;
+  padding: 22px 22px 14px !important;
+}
+
+[class*="-SearchContainer"] {
+  padding: 0 16px 16px !important;
+}
+
+[class*="-InputContainer"] {
+  background: var(--nc-paper) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+}
+
+[class*="-SearchInput"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+}
+
+[class*="-SearchInput"]::placeholder {
+  color: var(--nc-muted) !important;
+}
+
+[class*="-SidebarNavList"] {
+  border-top: 1px solid var(--nc-line-soft) !important;
+  padding: 8px !important;
+}
+
+[class*="-SidebarNavLink"] {
+  border-radius: 6px !important;
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  min-height: 46px !important;
+  padding: 0 14px !important;
+  transition: background-color 160ms ease, color 160ms ease !important;
+}
+
+[class*="-SidebarNavLink"]:hover {
+  background: var(--nc-paper) !important;
+  color: var(--nc-ink) !important;
+}
+
+.sidebar-active {
+  background: rgba(37, 92, 214, 0.09) !important;
+  box-shadow: inset 3px 0 0 var(--nc-blue) !important;
+  color: var(--nc-blue) !important;
+}
+
+[class*="-CollectionMain"] {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  padding-left: 0 !important;
+  width: auto !important;
+}
+
+[class*="-CollectionTopContainer"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 10px !important;
+  box-shadow: var(--nc-shadow) !important;
+  margin-bottom: 24px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+[class*="-CollectionTopRow"] {
+  min-height: 92px !important;
+  padding: 0 clamp(22px, 3vw, 34px) !important;
+}
+
+[class*="-CollectionTopHeading"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: clamp(27px, 3vw, 38px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.055em !important;
+}
+
+[class*="-CollectionTopNewButton"] {
+  background: var(--nc-blue) !important;
+  border: 1px solid var(--nc-blue) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 7px 18px rgba(37, 92, 214, 0.2) !important;
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  padding: 10px 17px !important;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease !important;
+}
+
+[class*="-CollectionTopNewButton"]:hover {
+  background: var(--nc-blue-deep) !important;
+  border-color: var(--nc-blue-deep) !important;
+  transform: translateY(-1px) !important;
+}
+
+[class*="-CollectionControlsContainer"] {
+  align-items: center !important;
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 11px !important;
+  margin: 0 0 14px !important;
+  min-height: 36px !important;
+  width: 100% !important;
+}
+
+[class*="-ControlButton-css"],
+[class*="-ViewControlsButton"] {
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 11px !important;
+  transition: color 160ms ease !important;
+}
+
+[class*="-ControlButton-css"]:hover,
+[class*="-ViewControlsButton"]:hover {
+  color: var(--nc-blue) !important;
+}
+
+[class*="-CardsGrid"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 10px !important;
+  box-shadow: var(--nc-shadow) !important;
+  gap: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  width: 100% !important;
+}
+
+[class*="-ListCard"] {
+  background: var(--nc-surface) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--nc-line-soft) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  min-height: 70px !important;
+  position: relative !important;
+}
+
+[class*="-ListCard"]:last-child {
+  border-bottom: 0 !important;
+}
+
+/* Hugo's section metadata file is not an editable article. */
+[class*="-ListCard"]:has(a[href$="/entries/_index"]) {
+  display: none !important;
+}
+
+[class*="-ListCard"]::before {
+  background: var(--nc-coral) !important;
+  bottom: 0 !important;
+  content: "" !important;
+  left: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  transform: scaleY(0) !important;
+  transform-origin: center !important;
+  transition: transform 180ms ease !important;
+  width: 3px !important;
+}
+
+[class*="-ListCard"]:hover::before,
+[class*="-ListCard"]:focus-within::before {
+  transform: scaleY(1) !important;
+}
+
+[class*="-ListCardLink"] {
+  color: var(--nc-ink) !important;
+  min-height: 70px !important;
+  padding: 19px 28px !important;
+  transition: background-color 180ms ease, padding-left 180ms ease !important;
+}
+
+[class*="-ListCardLink"]:hover,
+[class*="-ListCardLink"]:focus-visible {
+  background: rgba(37, 92, 214, 0.035) !important;
+  padding-left: 33px !important;
+}
+
+[class*="-ListCardTitle"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.35 !important;
+}
+
+/* Editor toolbar. */
+[class*="-EditorContainer"] {
+  background: var(--nc-paper) !important;
+}
+
+[class*="-ToolbarContainer"] {
+  background: var(--nc-ink) !important;
+  border: 0 !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 24px rgba(23, 33, 41, 0.12) !important;
+  color: #ffffff !important;
+  height: 76px !important;
+  min-height: 76px !important;
+}
+
+[class*="ToolbarSectionBackLink"] {
+  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  min-height: 76px !important;
+  padding: 0 24px !important;
+  transition: background-color 160ms ease !important;
+}
+
+[class*="ToolbarSectionBackLink"]:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[class*="-BackArrow"] {
+  color: var(--nc-coral) !important;
+  font-size: 22px !important;
+  margin-right: 14px !important;
+}
+
+[class*="-BackCollection"] {
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+}
+
+[class*="-BackStatus"] {
+  background: transparent !important;
+  color: #78c7bd !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 9px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.08em !important;
+  padding: 3px 0 0 !important;
+}
+
+[class*="ToolbarSectionMain"] {
+  min-height: 76px !important;
+  padding: 0 20px !important;
+}
+
+[class*="ToolbarSectionMeta"] {
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  min-height: 76px !important;
+  padding: 0 22px !important;
+}
+
+[class*="ToolbarContainer"] [class*="AppHeaderSiteLink"] {
+  color: #aebbc5 !important;
+}
+
+[class*="-SaveButton"] {
+  background: var(--nc-blue) !important;
+  border: 1px solid var(--nc-blue) !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-weight: 700 !important;
+}
+
+[class*="-SaveButton"][disabled] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: transparent !important;
+  color: rgba(255, 255, 255, 0.46) !important;
+}
+
+[class*="PublishedToolbarButton"] {
+  background: rgba(38, 119, 109, 0.2) !important;
+  border: 1px solid rgba(111, 198, 186, 0.3) !important;
+  border-radius: 6px !important;
+  color: #8bd4ca !important;
+  font-family: var(--nc-font-ui) !important;
+  font-weight: 700 !important;
+}
+
+[class*="-DeleteButton"] {
+  background: transparent !important;
+  border: 1px solid rgba(255, 128, 104, 0.25) !important;
+  border-radius: 6px !important;
+  color: #ff9d8a !important;
+  font-family: var(--nc-font-ui) !important;
+}
+
+[class*="-DeleteButton"]:hover {
+  background: rgba(230, 85, 59, 0.12) !important;
+  border-color: rgba(255, 128, 104, 0.5) !important;
+}
+
+[class*="PreviewLink"] {
+  color: #a9c1ff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* Writing surface. */
+[class*="-Editor e1nx"],
+[class*="-EditorContainer"] > [class*="-Editor"] {
+  top: 76px !important;
+}
+
+[class*="-StyledSplitPane"] {
+  background: var(--nc-paper) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+[class*="-StyledSplitPane"] > .Pane1 {
+  background: var(--nc-paper) !important;
+  border-right: 1px solid var(--nc-line) !important;
+}
+
+[class*="PreviewPaneContainer-ControlPaneContainer"] {
+  background: var(--nc-paper) !important;
+  padding: 36px clamp(24px, 4vw, 54px) 80px !important;
+}
+
+[class*="-ControlPaneContainer"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+}
+
+[class*="-ControlContainer"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 9px !important;
+  box-shadow: 0 5px 18px rgba(23, 33, 41, 0.04) !important;
+  margin: 0 0 20px !important;
+  overflow: visible !important;
+  padding: 16px 18px 18px !important;
+  position: relative !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
+}
+
+[class*="-ControlContainer"]::before {
+  background: var(--nc-coral) !important;
+  border-radius: 9px 0 0 9px !important;
+  bottom: -1px !important;
+  content: "" !important;
+  left: -1px !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  top: -1px !important;
+  transform: scaleY(0.45) !important;
+  transition: opacity 160ms ease, transform 160ms ease !important;
+  width: 3px !important;
+}
+
+[class*="-ControlContainer"]:focus-within {
+  border-color: rgba(37, 92, 214, 0.55) !important;
+  box-shadow: 0 0 0 3px rgba(37, 92, 214, 0.1), 0 10px 28px rgba(23, 33, 41, 0.07) !important;
+  transform: translateY(-1px) !important;
+}
+
+[class*="-ControlContainer"]:focus-within::before {
+  opacity: 1 !important;
+  transform: scaleY(1) !important;
+}
+
+[class*="-ControlTopbar"] {
+  align-items: center !important;
+  margin: 0 0 10px !important;
+  min-height: 18px !important;
+}
+
+[class*="-FieldLabel"] {
+  background: transparent !important;
+  border-radius: 0 !important;
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.075em !important;
+  line-height: 1.3 !important;
+  padding: 0 !important;
+  text-transform: uppercase !important;
+}
+
+[class*="-ControlContainer"] input,
+[class*="-ControlContainer"] textarea,
+[class*="-ControlContainer"] select,
+[class*="-ControlContainer"] [role="textbox"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  outline: none !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease !important;
+}
+
+[class*="-ControlContainer"] input,
+[class*="-ControlContainer"] select {
+  min-height: 48px !important;
+  padding: 10px 13px !important;
+}
+
+[class*="-ControlContainer"] textarea {
+  min-height: 126px !important;
+  padding: 12px 13px !important;
+  resize: vertical !important;
+}
+
+[class*="-ControlContainer"] input:focus,
+[class*="-ControlContainer"] textarea:focus,
+[class*="-ControlContainer"] select:focus,
+[class*="-ControlContainer"] [role="textbox"]:focus {
+  border-color: var(--nc-blue) !important;
+  box-shadow: 0 0 0 3px rgba(37, 92, 214, 0.1) !important;
+}
+
+[class*="-ControlHint"] {
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+  margin: 10px 2px 0 !important;
+}
+
+[class*="-DateTimeControl"] {
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+[class*="-Buttons"] button,
+[class*="-AddButton"] {
+  background: var(--nc-code) !important;
+  border: 1px solid var(--nc-line) !important;
+  border-radius: 5px !important;
+  color: var(--nc-ink-soft) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease !important;
+}
+
+[class*="-Buttons"] button:hover,
+[class*="-AddButton"]:hover {
+  background: rgba(37, 92, 214, 0.09) !important;
+  border-color: rgba(37, 92, 214, 0.32) !important;
+  color: var(--nc-blue) !important;
+}
+
+[class*="ToggleBackground"] {
+  box-shadow: inset 0 0 0 1px rgba(23, 33, 41, 0.12) !important;
+}
+
+[class*="-StyledToggle"]:focus-visible {
+  outline: 3px solid rgba(37, 92, 214, 0.24) !important;
+  outline-offset: 3px !important;
+}
+
+[class*="-TopBarContainer"] {
+  border-bottom: 1px solid var(--nc-line-soft) !important;
+  color: var(--nc-ink-soft) !important;
+  font-family: var(--nc-font-ui) !important;
+  padding-bottom: 12px !important;
+}
+
+[class*="-ListItem"] {
+  border-color: var(--nc-line-soft) !important;
+  border-radius: 7px !important;
+}
+
+.cms-editor-visual {
+  border-radius: 7px !important;
+  overflow: hidden !important;
+}
+
+[class*="-EditorControlBar"] {
+  background: var(--nc-code) !important;
+  border: 1px solid var(--nc-line) !important;
+  border-bottom: 0 !important;
+  border-radius: 7px 7px 0 0 !important;
+  color: var(--nc-ink-soft) !important;
+}
+
+.cms-editor-visual [role="textbox"] {
+  border-radius: 0 0 7px 7px !important;
+  font-family: var(--nc-font-reading) !important;
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+  min-height: 480px !important;
+  padding: 24px !important;
+}
+
+[class*="-Shortcode"] {
+  background: rgba(37, 92, 214, 0.04) !important;
+  border-color: rgba(37, 92, 214, 0.18) !important;
+}
+
+[class*="-NestedObjectLabel"] {
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+}
+
+[class*="-EditorToggle"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line) !important;
+  box-shadow: 0 8px 22px rgba(23, 33, 41, 0.12) !important;
+  color: var(--nc-blue) !important;
+}
+
+/* Keyboard and motion. */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid rgba(37, 92, 214, 0.3) !important;
+  outline-offset: 3px !important;
+}
+
+[class*="-CollectionMain"],
+[class*="-ControlPaneContainer"] {
+  animation: nc-enter 280ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes nc-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 980px) {
+  [class*="-CollectionContainer"] {
+    display: block !important;
+  }
+
+  [class*="-SidebarContainer"] {
+    margin-bottom: 22px !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
+  [class*="-SidebarHeading"],
+  [class*="-SearchContainer"] {
+    display: none !important;
+  }
+
+  [class*="-SidebarNavList"] {
+    border-top: 0 !important;
+  }
+
+  [class*="-ToolbarContainer"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-rows: 64px 60px !important;
+    height: 124px !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    min-height: 124px !important;
+    width: 100vw !important;
+  }
+
+  [class*="ToolbarSectionBackLink"] {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-height: 64px !important;
+  }
+
+  [class*="ToolbarSectionMain"] {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    min-height: 60px !important;
+    min-width: 0 !important;
+    padding: 0 16px !important;
+    width: 100% !important;
+  }
+
+  [class*="ToolbarSectionMeta"] {
+    display: flex !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-height: 64px !important;
+  }
+
+  [class*="ToolbarSubSectionFirst"] {
+    gap: 8px !important;
+  }
+
+  [class*="ToolbarSubSectionFirst"] > * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  [class*="ToolbarSubSectionLast"] {
+    margin-left: auto !important;
+  }
+
+  [class*="-DeleteButton"] {
+    display: inline-flex !important;
+  }
+
+  [class*="-Editor e1nx"],
+  [class*="-EditorContainer"] > [class*="-Editor"] {
+    top: 124px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  [class*="-AppHeaderContent"] {
+    display: block !important;
+    min-height: 126px !important;
+    padding: 0 14px !important;
+    position: relative !important;
+  }
+
+  [class*="-AppHeaderNavList"] {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: 50px 76px !important;
+    min-height: 126px !important;
+    width: 100% !important;
+  }
+
+  [class*="-AppHeaderLogo"] {
+    align-items: center !important;
+    display: flex !important;
+    grid-column: 1 / 3 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+
+  [class*="-AppHeaderLogo"] img {
+    height: 36px !important;
+  }
+
+  [class*="-AppHeaderNavList"] > li:nth-child(2) {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+
+  [class*="-AppHeaderNavList"] > li:nth-child(3) {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  [class*="-AppHeaderNavList"] > li:nth-child(4) {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+  }
+
+  [class*="AppHeaderSiteLink"] {
+    display: none !important;
+  }
+
+  [class*="AppHeaderActions"] {
+    position: absolute !important;
+    right: 14px !important;
+    top: 8px !important;
+  }
+
+  [class*="AppHeaderActions"] [class*="StyledWrapper"]:first-child {
+    display: none !important;
+  }
+
+  [class*="-AppHeaderNavLink"],
+  [class*="-AppHeaderButton"] {
+    font-size: 12px !important;
+    grid-row: 2 !important;
+    justify-content: center !important;
+    min-height: 76px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  [class*="-CollectionContainer"] {
+    padding: 18px 12px 48px !important;
+  }
+
+  [class*="-CollectionTopRow"] {
+    min-height: 76px !important;
+  }
+
+  [class*="-CollectionTopHeading"] {
+    font-size: 26px !important;
+  }
+
+  [class*="-ListCardLink"] {
+    padding: 17px 18px !important;
+  }
+
+  [class*="-ListCardLink"]:hover {
+    padding-left: 21px !important;
+  }
+
+  [class*="ToolbarSectionBackLink"] {
+    min-width: 56px !important;
+    padding: 0 16px !important;
+    width: 56px !important;
+  }
+
+  [class*="-BackCollection"],
+  [class*="-BackStatus"] {
+    display: none !important;
+  }
+
+  [class*="ToolbarSectionMain"] {
+    padding: 0 10px !important;
+  }
+
+  [class*="-DeleteButton"] {
+    font-size: 0 !important;
+    min-width: 66px !important;
+  }
+
+  [class*="-DeleteButton"]::after {
+    content: "Delete" !important;
+    font-size: 12px !important;
+  }
+
+  [class*="PreviewPaneContainer-ControlPaneContainer"] {
+    padding: 22px 14px 60px !important;
+  }
+
+  [class*="-ControlContainer"] {
+    padding: 14px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
