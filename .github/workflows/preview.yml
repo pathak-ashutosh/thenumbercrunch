@@ -72,6 +72,7 @@ jobs:
         run: |
           set -euo pipefail
           destination="/var/www/thenumbercrunch.com/html/previews/pr-${PR_NUMBER}/${PREVIEW_REVISION}/"
+          ssh "deploy@$VPS_HOST" "mkdir -p '$destination'"
           rsync -av --delete public/ "deploy@$VPS_HOST:$destination"
       - name: Publish preview URL
         run: |
