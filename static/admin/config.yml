@@ -38,7 +38,7 @@ collections:
     slug: "{{slug}}"
     preview_path: "posts/{{slug}}/"
     identifier_field: title
-    summary: "{{title}} — {{date}}"
+    summary: "{{title}}"
     sortable_fields: [date, title, draft]
     view_filters:
       - { label: Drafts, field: draft, pattern: "true" }
