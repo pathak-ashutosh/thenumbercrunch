@@ -820,7 +820,8 @@ button:disabled,
   border: 1px solid var(--nc-line-soft) !important;
   border-radius: 9px !important;
   box-shadow: 0 6px 18px rgba(23, 33, 41, 0.045) !important;
-  min-height: 142px !important;
+  height: 156px !important;
+  min-height: 156px !important;
   overflow: hidden !important;
   position: relative !important;
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
@@ -852,9 +853,11 @@ button:disabled,
 }
 
 [class*="-GridCardLink"] {
+  align-items: flex-start !important;
   color: var(--nc-ink) !important;
   display: flex !important;
-  min-height: 142px !important;
+  justify-content: flex-start !important;
+  min-height: 156px !important;
   padding: 22px !important;
 }
 
@@ -892,6 +895,7 @@ button:disabled,
   margin: 0 !important;
   overflow: hidden !important;
   padding: 0 !important;
+  width: 100% !important;
 }
 
 [class*="-WorkflowTopRow"] {
@@ -936,6 +940,7 @@ button:disabled,
   line-height: 1.5 !important;
   margin: 0 !important;
   padding: 13px clamp(22px, 3vw, 34px) 14px !important;
+  width: 100% !important;
 }
 
 [class*="-WorkflowListContainer"] {
@@ -1002,6 +1007,14 @@ button:disabled,
 }
 
 [class*="-WorkflowListContainer"] > div:not(:has(a))::after {
+  content: none !important;
+}
+
+[class*="-WorkflowListContainer"] > div > div {
+  min-height: 100% !important;
+}
+
+[class*="-WorkflowListContainer"] > div > div:not(:has(a))::after {
   color: var(--nc-muted) !important;
   display: block !important;
   font-family: var(--nc-font-ui) !important;
@@ -1013,15 +1026,15 @@ button:disabled,
   white-space: pre-line !important;
 }
 
-[class*="-WorkflowListContainer"] > div:nth-child(1):not(:has(a))::after {
+[class*="-WorkflowListContainer"] > div:nth-child(1) > div:not(:has(a))::after {
   content: "No drafts yet.\A Start a post when an idea is ready." !important;
 }
 
-[class*="-WorkflowListContainer"] > div:nth-child(2):not(:has(a))::after {
+[class*="-WorkflowListContainer"] > div:nth-child(2) > div:not(:has(a))::after {
   content: "Nothing in review.\A Move a draft here when it is shaped." !important;
 }
 
-[class*="-WorkflowListContainer"] > div:nth-child(3):not(:has(a))::after {
+[class*="-WorkflowListContainer"] > div:nth-child(3) > div:not(:has(a))::after {
   content: "Nothing ready.\A Reviewed posts appear here before publishing." !important;
 }
 
@@ -1300,7 +1313,7 @@ button:disabled,
     min-height: 250px !important;
   }
 
-  [class*="-WorkflowListContainer"] > div:not(:has(a))::after {
+  [class*="-WorkflowListContainer"] > div > div:not(:has(a))::after {
     margin-top: 44px !important;
   }
 
@@ -1547,12 +1560,12 @@ button:disabled,
     padding: 0 10px !important;
   }
 
-  [class*="-DeleteButton"] {
+  [class*="-ToolbarContainer"] [class*="-DeleteButton"] {
     font-size: 0 !important;
     min-width: 66px !important;
   }
 
-  [class*="-DeleteButton"]::after {
+  [class*="-ToolbarContainer"] [class*="-DeleteButton"]::after {
     content: "Delete" !important;
     font-size: 12px !important;
   }
