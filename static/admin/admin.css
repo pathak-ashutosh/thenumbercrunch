@@ -735,23 +735,55 @@ button:focus-visible,
 
 @media (max-width: 720px) {
   [class*="-AppHeaderContent"] {
+    display: block !important;
+    min-height: 126px !important;
     padding: 0 14px !important;
+    position: relative !important;
   }
 
-  [class*="-AppHeaderLogo"],
+  [class*="-AppHeaderNavList"] {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: 50px 76px !important;
+    min-height: 126px !important;
+    width: 100% !important;
+  }
+
+  [class*="-AppHeaderLogo"] {
+    align-items: center !important;
+    display: flex !important;
+    grid-column: 1 / 3 !important;
+    grid-row: 1 !important;
+    margin: 0 !important;
+  }
+
+  [class*="-AppHeaderLogo"] img {
+    height: 36px !important;
+  }
+
   [class*="AppHeaderSiteLink"] {
+    display: none !important;
+  }
+
+  [class*="AppHeaderActions"] {
+    position: absolute !important;
+    right: 14px !important;
+    top: 8px !important;
+  }
+
+  [class*="AppHeaderActions"] [class*="StyledWrapper"]:first-child {
     display: none !important;
   }
 
   [class*="-AppHeaderNavLink"],
   [class*="-AppHeaderButton"] {
     font-size: 12px !important;
+    grid-row: 2 !important;
+    justify-content: center !important;
+    min-height: 76px !important;
     padding-left: 10px !important;
     padding-right: 10px !important;
-  }
-
-  [class*="AppHeaderQuickNewButton"] {
-    padding: 8px 10px !important;
   }
 
   [class*="-CollectionContainer"] {
