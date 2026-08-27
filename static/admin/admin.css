@@ -727,9 +727,52 @@ button:focus-visible,
     border-top: 0 !important;
   }
 
-  [class*="ToolbarSectionMeta"],
+  [class*="-ToolbarContainer"] {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-rows: 64px 60px !important;
+    height: 124px !important;
+    min-height: 124px !important;
+    width: 100vw !important;
+  }
+
+  [class*="ToolbarSectionBackLink"] {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    min-height: 64px !important;
+  }
+
+  [class*="ToolbarSectionMain"] {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    grid-column: 1 / -1 !important;
+    grid-row: 2 !important;
+    min-height: 60px !important;
+    padding: 0 16px !important;
+    width: 100% !important;
+  }
+
+  [class*="ToolbarSectionMeta"] {
+    display: flex !important;
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    min-height: 64px !important;
+  }
+
+  [class*="ToolbarSubSectionFirst"] {
+    gap: 8px !important;
+  }
+
+  [class*="ToolbarSubSectionLast"] {
+    margin-left: auto !important;
+  }
+
   [class*="-DeleteButton"] {
-    display: none !important;
+    display: inline-flex !important;
+  }
+
+  [class*="-Editor e1nx"],
+  [class*="-EditorContainer"] > [class*="-Editor"] {
+    top: 124px !important;
   }
 }
 
@@ -834,6 +877,16 @@ button:focus-visible,
 
   [class*="ToolbarSectionMain"] {
     padding: 0 10px !important;
+  }
+
+  [class*="-DeleteButton"] {
+    font-size: 0 !important;
+    min-width: 66px !important;
+  }
+
+  [class*="-DeleteButton"]::after {
+    content: "Delete" !important;
+    font-size: 12px !important;
   }
 
   [class*="PreviewPaneContainer-ControlPaneContainer"] {
