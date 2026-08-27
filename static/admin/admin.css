@@ -144,8 +144,9 @@ body {
 
 [class*="-CollectionContainer"] {
   align-items: flex-start !important;
-  flex-wrap: nowrap !important;
+  display: grid !important;
   gap: clamp(24px, 3vw, 44px) !important;
+  grid-template-columns: 250px minmax(0, 1fr) !important;
   margin: 0 auto !important;
   max-width: 1320px !important;
   padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 56px) 72px !important;
@@ -236,6 +237,7 @@ body {
   margin-bottom: 24px !important;
   overflow: hidden !important;
   padding: 0 !important;
+  width: 100% !important;
 }
 
 [class*="-CollectionTopRow"] {
@@ -277,6 +279,7 @@ body {
   font-size: 11px !important;
   margin: 0 0 14px !important;
   min-height: 36px !important;
+  width: 100% !important;
 }
 
 [class*="-ControlButton-css"],
