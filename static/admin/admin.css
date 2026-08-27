@@ -707,6 +707,598 @@ button:focus-visible,
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Shared micro-components: menus, toggles, feedback, and fine interaction. */
+[class*="-InputContainer"]:focus-within,
+[class*="-SearchContainer"]:focus-within {
+  border-color: rgba(37, 92, 214, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(37, 92, 214, 0.1) !important;
+}
+
+[class*="-DropdownList"] {
+  animation: nc-menu-enter 140ms cubic-bezier(0.2, 0.7, 0.2, 1) both !important;
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 16px 38px rgba(23, 33, 41, 0.16) !important;
+  min-width: 190px !important;
+  overflow: hidden !important;
+  padding: 6px !important;
+}
+
+[class*="dropdownItem"] {
+  align-items: center !important;
+  background: transparent !important;
+  border-radius: 5px !important;
+  color: var(--nc-ink-soft) !important;
+  display: flex !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  min-height: 38px !important;
+  padding: 9px 11px !important;
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease !important;
+  white-space: normal !important;
+}
+
+[class*="dropdownItem"]:hover,
+[class*="dropdownItem"]:focus-visible {
+  background: rgba(37, 92, 214, 0.08) !important;
+  color: var(--nc-blue) !important;
+  transform: translateX(2px) !important;
+}
+
+[class*="-ViewControlsSection"] {
+  align-items: center !important;
+  background: var(--nc-code) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 7px !important;
+  display: flex !important;
+  gap: 2px !important;
+  padding: 3px !important;
+}
+
+[class*="-ViewControlsButton"] {
+  align-items: center !important;
+  border-radius: 4px !important;
+  display: inline-flex !important;
+  height: 28px !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease !important;
+  width: 28px !important;
+}
+
+[class*="-ViewControlsButton"]:hover {
+  background: var(--nc-surface) !important;
+  transform: translateY(-1px) !important;
+}
+
+[class*="-CollectionTopNewButton"]:active,
+[class*="AppHeaderQuickNewButton"]:active,
+[class*="-SaveButton"]:active,
+[class*="-ActionButton"]:active,
+[class*="-UploadButton"]:active {
+  transform: translateY(1px) !important;
+}
+
+button:disabled,
+[class*="disabled"] {
+  cursor: not-allowed !important;
+}
+
+.Toastify__toast {
+  background: var(--nc-ink) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 16px 42px rgba(23, 33, 41, 0.22) !important;
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+}
+
+@keyframes nc-menu-enter {
+  from { opacity: 0; transform: translateY(-4px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Contents: grid mode receives the same editorial precision as list mode. */
+[class*="-CardsGrid"]:has(> [class*="-GridCard"]) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: grid !important;
+  gap: 12px !important;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+
+[class*="-GridCard"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 9px !important;
+  box-shadow: 0 6px 18px rgba(23, 33, 41, 0.045) !important;
+  height: 156px !important;
+  min-height: 156px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
+}
+
+[class*="-GridCard"]::before {
+  background: var(--nc-coral) !important;
+  content: "" !important;
+  height: 3px !important;
+  left: 0 !important;
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
+  transform: scaleX(0) !important;
+  transform-origin: left !important;
+  transition: transform 180ms ease !important;
+}
+
+[class*="-GridCard"]:hover,
+[class*="-GridCard"]:focus-within {
+  border-color: rgba(37, 92, 214, 0.3) !important;
+  box-shadow: 0 14px 30px rgba(23, 33, 41, 0.09) !important;
+  transform: translateY(-2px) !important;
+}
+
+[class*="-GridCard"]:hover::before,
+[class*="-GridCard"]:focus-within::before {
+  transform: scaleX(1) !important;
+}
+
+[class*="-GridCardLink"] {
+  align-items: flex-start !important;
+  color: var(--nc-ink) !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  min-height: 156px !important;
+  padding: 22px !important;
+}
+
+[class*="-CardBody"] {
+  align-items: flex-start !important;
+  display: flex !important;
+  flex: 1 !important;
+}
+
+[class*="-CardHeading"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1.35 !important;
+}
+
+[class*="-GridCard"]:has(a[href$="/entries/_index"]) {
+  display: none !important;
+}
+
+/* Workflow: a calm production board with semantic state, not candy bars. */
+[class*="-WorkflowContainer"] {
+  margin: 0 auto !important;
+  max-width: 1400px !important;
+  padding: clamp(28px, 4vw, 56px) clamp(20px, 4vw, 56px) 72px !important;
+}
+
+[class*="-WorkflowTop"] {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 10px !important;
+  box-shadow: var(--nc-shadow) !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  width: 100% !important;
+}
+
+[class*="-WorkflowTopRow"] {
+  align-items: center !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  gap: 20px !important;
+  justify-content: space-between !important;
+  min-height: 92px !important;
+  padding: 0 clamp(22px, 3vw, 34px) !important;
+}
+
+[class*="-WorkflowTopHeading"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--nc-ink) !important;
+  flex: 1 1 auto !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: clamp(27px, 3vw, 38px) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.055em !important;
+  width: auto !important;
+}
+
+[class*="-WorkflowTopRow"] [class*="StyledDropdownButton"] {
+  background: var(--nc-blue) !important;
+  border: 1px solid var(--nc-blue) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 7px 18px rgba(37, 92, 214, 0.2) !important;
+  color: #ffffff !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  min-height: 38px !important;
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease !important;
+}
+
+[class*="-WorkflowTopRow"] [class*="StyledDropdownButton"]:hover {
+  background: var(--nc-blue-deep) !important;
+  border-color: var(--nc-blue-deep) !important;
+  transform: translateY(-1px) !important;
+}
+
+[class*="-WorkflowTopDescription"] {
+  background: rgba(37, 92, 214, 0.025) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  border-top: 1px solid var(--nc-line-soft) !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  padding: 13px clamp(22px, 3vw, 34px) 14px !important;
+  width: 100% !important;
+}
+
+[class*="-WorkflowListContainer"] {
+  display: grid !important;
+  gap: 16px !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  margin-top: 24px !important;
+}
+
+[class*="-WorkflowListContainer"] > div {
+  background: var(--nc-surface) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(23, 33, 41, 0.05) !important;
+  min-height: 420px !important;
+  overflow: hidden !important;
+  padding: 0 18px 24px !important;
+  position: relative !important;
+}
+
+[class*="-ColumnHeader"] {
+  align-items: center !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--nc-line-soft) !important;
+  border-radius: 0 !important;
+  color: var(--nc-ink) !important;
+  display: flex !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  gap: 9px !important;
+  letter-spacing: -0.025em !important;
+  margin: 0 !important;
+  min-height: 60px !important;
+  padding: 0 !important;
+}
+
+[class*="-ColumnHeader"]::before {
+  background: var(--nc-blue) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 0 4px rgba(37, 92, 214, 0.09) !important;
+  content: "" !important;
+  height: 8px !important;
+  width: 8px !important;
+}
+
+[class*="-WorkflowListContainer"] > div:nth-child(2) [class*="-ColumnHeader"]::before {
+  background: var(--nc-coral) !important;
+  box-shadow: 0 0 0 4px rgba(230, 85, 59, 0.09) !important;
+}
+
+[class*="-WorkflowListContainer"] > div:nth-child(3) [class*="-ColumnHeader"]::before {
+  background: var(--nc-teal) !important;
+  box-shadow: 0 0 0 4px rgba(38, 119, 109, 0.09) !important;
+}
+
+[class*="-ColumnCount"] {
+  color: var(--nc-muted) !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.07em !important;
+  margin: 15px 0 0 !important;
+}
+
+[class*="-WorkflowListContainer"] > div:not(:has(a))::after {
+  content: none !important;
+}
+
+[class*="-WorkflowListContainer"] > div > div {
+  min-height: 100% !important;
+}
+
+[class*="-WorkflowListContainer"] > div > div:not(:has(a))::after {
+  color: var(--nc-muted) !important;
+  display: block !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  margin: 74px auto 0 !important;
+  max-width: 190px !important;
+  text-align: center !important;
+  white-space: pre-line !important;
+}
+
+[class*="-WorkflowListContainer"] > div:nth-child(1) > div:not(:has(a))::after {
+  content: "No drafts yet.\A Start a post when an idea is ready." !important;
+}
+
+[class*="-WorkflowListContainer"] > div:nth-child(2) > div:not(:has(a))::after {
+  content: "Nothing in review.\A Move a draft here when it is shaped." !important;
+}
+
+[class*="-WorkflowListContainer"] > div:nth-child(3) > div:not(:has(a))::after {
+  content: "Nothing ready.\A Reviewed posts appear here before publishing." !important;
+}
+
+[class*="-WorkflowListContainer"] [class*="Card"] {
+  border-color: var(--nc-line-soft) !important;
+  border-radius: 7px !important;
+  box-shadow: 0 5px 16px rgba(23, 33, 41, 0.045) !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
+}
+
+[class*="-WorkflowListContainer"] [class*="Card"]:hover {
+  border-color: rgba(37, 92, 214, 0.3) !important;
+  box-shadow: 0 10px 24px rgba(23, 33, 41, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Media: a focused asset workspace with deliberate empty and action states. */
+.ReactModalPortal > div:first-child {
+  animation: nc-overlay-enter 180ms ease both !important;
+  backdrop-filter: blur(7px) !important;
+  background: rgba(14, 22, 28, 0.68) !important;
+}
+
+.ReactModalPortal [class*="-StyledModal"] {
+  animation: nc-modal-enter 220ms cubic-bezier(0.2, 0.7, 0.2, 1) both !important;
+  background: var(--nc-paper) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 34px 90px rgba(10, 17, 22, 0.34) !important;
+  height: min(720px, calc(100vh - 48px)) !important;
+  max-width: calc(100vw - 48px) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  width: 1180px !important;
+}
+
+[class*="-LibraryTop"] {
+  background: var(--nc-surface) !important;
+  border-bottom: 1px solid var(--nc-line-soft) !important;
+  gap: 14px !important;
+  padding: 22px 26px 18px !important;
+}
+
+[class*="-RowContainer"] {
+  align-items: center !important;
+  gap: 14px !important;
+  justify-content: space-between !important;
+}
+
+[class*="-HeaderContainer"] {
+  align-items: center !important;
+  display: flex !important;
+  gap: 12px !important;
+}
+
+[class*="-LibraryTitle"] {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 25px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.045em !important;
+  line-height: 1.1 !important;
+}
+
+[class*="-CloseButton"] {
+  background: var(--nc-code) !important;
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
+  color: var(--nc-muted) !important;
+  flex: 0 0 36px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  order: -1 !important;
+  position: static !important;
+  transition: background-color 120ms ease, color 120ms ease, transform 120ms ease !important;
+  width: 36px !important;
+}
+
+[class*="-CloseButton"]:hover {
+  background: rgba(230, 85, 59, 0.09) !important;
+  color: var(--nc-coral) !important;
+  transform: rotate(3deg) !important;
+}
+
+[class*="-ButtonsContainer"] {
+  align-items: center !important;
+  gap: 7px !important;
+}
+
+[class*="-ActionButton"],
+[class*="-UploadButton"],
+.nc-fileUploadButton,
+.ReactModalPortal [class*="-DeleteButton"] {
+  align-items: center !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  justify-content: center !important;
+  min-height: 38px !important;
+  padding: 0 14px !important;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease !important;
+}
+
+[class*="-ActionButton"] {
+  background: var(--nc-code) !important;
+  border: 1px solid var(--nc-line) !important;
+  color: var(--nc-ink-soft) !important;
+}
+
+[class*="-ActionButton"]:not(:disabled):hover {
+  background: rgba(37, 92, 214, 0.08) !important;
+  border-color: rgba(37, 92, 214, 0.3) !important;
+  color: var(--nc-blue) !important;
+}
+
+[class*="-UploadButton"],
+.nc-fileUploadButton {
+  background: var(--nc-blue) !important;
+  border: 1px solid var(--nc-blue) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+}
+
+[class*="-UploadButton"]:hover,
+.nc-fileUploadButton:hover {
+  background: var(--nc-blue-deep) !important;
+  border-color: var(--nc-blue-deep) !important;
+  transform: translateY(-1px) !important;
+}
+
+.ReactModalPortal [class*="-DeleteButton"] {
+  background: transparent !important;
+  border: 1px solid rgba(230, 85, 59, 0.22) !important;
+  color: var(--nc-coral) !important;
+}
+
+.ReactModalPortal [class*="-DeleteButton"]:not(:disabled):hover {
+  background: rgba(230, 85, 59, 0.08) !important;
+  border-color: rgba(230, 85, 59, 0.4) !important;
+}
+
+[class*="-ActionButton"]:disabled,
+.ReactModalPortal [class*="-DeleteButton"]:disabled {
+  background: #f1f4f7 !important;
+  border-color: var(--nc-line-soft) !important;
+  color: #9ba6af !important;
+  opacity: 1 !important;
+}
+
+.ReactModalPortal [class*="-SearchContainer"] {
+  border: 1px solid var(--nc-line-soft) !important;
+  border-radius: 7px !important;
+  flex: 1 1 360px !important;
+  max-width: 520px !important;
+  padding: 0 !important;
+}
+
+.ReactModalPortal [class*="-SearchInput"] {
+  background: var(--nc-paper) !important;
+  border: 0 !important;
+  border-radius: 7px !important;
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  height: 38px !important;
+  padding: 9px 12px 9px 38px !important;
+  width: 100% !important;
+}
+
+[class*="-EmptyMessageContainer"] {
+  align-items: center !important;
+  background: var(--nc-surface) !important;
+  border: 1px dashed var(--nc-line) !important;
+  border-radius: 11px !important;
+  color: var(--nc-ink) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  margin: 26px !important;
+  min-height: 390px !important;
+  padding: 42px 24px !important;
+  text-align: center !important;
+}
+
+[class*="-EmptyMessageContainer"]::before {
+  color: var(--nc-blue) !important;
+  content: "MEDIA / 00" !important;
+  font-family: var(--nc-font-mono) !important;
+  font-size: 10px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1em !important;
+  margin-bottom: 14px !important;
+}
+
+[class*="-EmptyMessageContainer"]::after {
+  color: var(--nc-muted) !important;
+  content: "Upload the first image or file for this publication." !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  margin-top: 8px !important;
+}
+
+[class*="-EmptyMessageContainer"] h1 {
+  color: var(--nc-ink) !important;
+  font-family: var(--nc-font-ui) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.035em !important;
+}
+
+[class*="-CardGridContainer"] {
+  display: grid !important;
+  gap: 14px !important;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+  overflow: auto !important;
+  padding: 24px 26px 30px !important;
+}
+
+.ReactModalPortal [class*="-Card"] {
+  border-color: var(--nc-line-soft) !important;
+  border-radius: 9px !important;
+  box-shadow: 0 5px 18px rgba(23, 33, 41, 0.05) !important;
+  overflow: hidden !important;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease !important;
+}
+
+.ReactModalPortal [class*="-Card"]:hover {
+  border-color: rgba(37, 92, 214, 0.35) !important;
+  box-shadow: 0 12px 28px rgba(23, 33, 41, 0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+@keyframes nc-overlay-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes nc-modal-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (max-width: 980px) {
   [class*="-CollectionContainer"] {
     display: block !important;
@@ -725,6 +1317,28 @@ button:focus-visible,
 
   [class*="-SidebarNavList"] {
     border-top: 0 !important;
+  }
+
+  [class*="-WorkflowContainer"] {
+    padding: 28px 20px 56px !important;
+  }
+
+  [class*="-WorkflowListContainer"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [class*="-WorkflowListContainer"] > div {
+    min-height: 250px !important;
+  }
+
+  [class*="-WorkflowListContainer"] > div > div:not(:has(a))::after {
+    margin-top: 44px !important;
+  }
+
+  .ReactModalPortal [class*="-StyledModal"] {
+    height: calc(100vh - 32px) !important;
+    max-width: calc(100vw - 32px) !important;
+    width: calc(100vw - 32px) !important;
   }
 
   [class*="-ToolbarContainer"] {
@@ -856,6 +1470,87 @@ button:focus-visible,
     padding: 18px 12px 48px !important;
   }
 
+  [class*="-WorkflowContainer"] {
+    padding: 18px 12px 48px !important;
+  }
+
+  [class*="-WorkflowTopRow"] {
+    align-items: flex-start !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    min-height: 76px !important;
+    padding: 18px !important;
+  }
+
+  [class*="-WorkflowTopHeading"] {
+    flex-basis: 100% !important;
+    font-size: 25px !important;
+  }
+
+  [class*="-WorkflowTopDescription"] {
+    padding: 12px 18px 13px !important;
+  }
+
+  [class*="-WorkflowListContainer"] {
+    gap: 12px !important;
+    margin-top: 16px !important;
+  }
+
+  [class*="-WorkflowListContainer"] > div {
+    min-height: 230px !important;
+    padding: 0 16px 20px !important;
+  }
+
+  .ReactModalPortal [class*="-StyledModal"] {
+    border-radius: 11px !important;
+    height: calc(100vh - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+    width: calc(100vw - 16px) !important;
+  }
+
+  [class*="-LibraryTop"] {
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  [class*="-RowContainer"] {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  [class*="-LibraryTitle"] {
+    font-size: 22px !important;
+  }
+
+  [class*="-ButtonsContainer"] {
+    gap: 5px !important;
+  }
+
+  [class*="-ActionButton"],
+  [class*="-UploadButton"],
+  .nc-fileUploadButton,
+  .ReactModalPortal [class*="-DeleteButton"] {
+    min-height: 36px !important;
+    padding: 0 10px !important;
+  }
+
+  .ReactModalPortal [class*="-SearchContainer"] {
+    flex-basis: 230px !important;
+    max-width: none !important;
+  }
+
+  [class*="-EmptyMessageContainer"] {
+    margin: 14px !important;
+    min-height: 300px !important;
+    padding: 32px 18px !important;
+  }
+
+  [class*="-CardGridContainer"] {
+    gap: 10px !important;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    padding: 16px !important;
+  }
+
   [class*="-CollectionTopRow"] {
     min-height: 76px !important;
   }
@@ -887,12 +1582,12 @@ button:focus-visible,
     padding: 0 10px !important;
   }
 
-  [class*="-DeleteButton"] {
+  [class*="-ToolbarContainer"] [class*="-DeleteButton"] {
     font-size: 0 !important;
     min-width: 66px !important;
   }
 
-  [class*="-DeleteButton"]::after {
+  [class*="-ToolbarContainer"] [class*="-DeleteButton"]::after {
     content: "Delete" !important;
     font-size: 12px !important;
   }
